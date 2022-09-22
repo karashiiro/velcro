@@ -3,16 +3,44 @@ package main
 import (
 	"bufio"
 	"context"
+	"database/sql"
+	"database/sql/driver"
 	"encoding/json"
+	"io"
 	"log"
 	"net"
 	"os"
 	"time"
 
+	"entgo.io/ent/dialect"
+	"github.com/pkg/errors"
 	"github.com/velcro-xiv/velcro/ent"
 
-	_ "github.com/mattn/go-sqlite3"
+	"modernc.org/sqlite"
 )
+
+type sqliteDriver struct {
+	*sqlite.Driver
+}
+
+func (d sqliteDriver) Open(name string) (driver.Conn, error) {
+	conn, err := d.Driver.Open(name)
+	if err != nil {
+		return conn, err
+	}
+	c := conn.(interface {
+		Exec(stmt string, args []driver.Value) (driver.Result, error)
+	})
+	if _, err := c.Exec("PRAGMA foreign_keys = on;", nil); err != nil {
+		conn.Close()
+		return nil, errors.Wrap(err, "failed to enable enable foreign keys")
+	}
+	return conn, nil
+}
+
+func init() {
+	sql.Register("sqlite3", sqliteDriver{Driver: &sqlite.Driver{}})
+}
 
 type SniffRecord struct {
 	Timestamp          *time.Time `json:"t"`
@@ -45,7 +73,7 @@ func CreateMessage(ctx context.Context, client *ent.Client, sniff *SniffRecord) 
 }
 
 func main() {
-	client, err := ent.Open("sqlite3", "file:velcro.db?cache=shared&_fk=1")
+	client, err := ent.Open(dialect.SQLite, "file:velcro.db?cache=shared")
 	if err != nil {
 		log.Fatalf("failed opening connection to sqlite: %v", err)
 	}
@@ -60,11 +88,11 @@ func main() {
 	}
 
 	// Store data in the database.
-	scanner := bufio.NewScanner(os.Stdin)
+	reader := bufio.NewReader(os.Stdin)
 	for {
-		log.Println("reading data")
-		if !scanner.Scan() {
-			if err := scanner.Err(); err != nil {
+		buf, err := reader.ReadBytes('\n')
+		if err != nil {
+			if err != io.EOF {
 				log.Fatalf("failed reading standard input: %v", err)
 			}
 
@@ -74,7 +102,7 @@ func main() {
 		log.Println("found new data")
 
 		sniff := SniffRecord{}
-		err := json.Unmarshal(scanner.Bytes(), &sniff)
+		err = json.Unmarshal(buf, &sniff)
 		if err != nil {
 			log.Fatalf("failed to unmarshal record: %v", err)
 		}

@@ -1,24 +1,23 @@
 package main
 
-
 import (
-    "context"
-    "log"
+	"context"
+	"log"
 
-    "github.com/karashiiro/velcro/ent"
+	"github.com/karashiiro/velcro/ent"
 
-    _ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
 	client, err := ent.Open("sqlite3", "file:ent?mode=memory&cache=shared&_fk=1")
-    if err != nil {
-        log.Fatalf("failed opening connection to sqlite: %v", err)
-    }
-    defer client.Close()
+	if err != nil {
+		log.Fatalf("failed opening connection to sqlite: %v", err)
+	}
+	defer client.Close()
 
-    // Run the auto migration tool.
-    if err := client.Schema.Create(context.Background()); err != nil {
-        log.Fatalf("failed creating schema resources: %v", err)
-    }
+	// Run the auto migration tool.
+	if err := client.Schema.Create(context.Background()); err != nil {
+		log.Fatalf("failed creating schema resources: %v", err)
+	}
 }

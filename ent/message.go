@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/karashiiro/velcro/ent/message"
+	"github.com/velcro-xiv/velcro/ent/message"
 )
 
 // Message is the model entity for the Message schema.

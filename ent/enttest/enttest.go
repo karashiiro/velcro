@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/karashiiro/velcro/ent"
+	"github.com/velcro-xiv/velcro/ent"
 	// required by schema hooks.
-	_ "github.com/karashiiro/velcro/ent/runtime"
+	_ "github.com/velcro-xiv/velcro/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/karashiiro/velcro/ent/migrate"
+	"github.com/velcro-xiv/velcro/ent/migrate"
 )
 
 type (

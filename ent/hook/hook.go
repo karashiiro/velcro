@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/karashiiro/velcro/ent"
+	"github.com/velcro-xiv/velcro/ent"
 )
 
 // The MessageFunc type is an adapter to allow the use of ordinary

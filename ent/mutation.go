@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/karashiiro/velcro/ent/message"
-	"github.com/karashiiro/velcro/ent/predicate"
+	"github.com/velcro-xiv/velcro/ent/message"
+	"github.com/velcro-xiv/velcro/ent/predicate"
 
 	"entgo.io/ent"
 )

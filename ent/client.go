@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/karashiiro/velcro/ent/migrate"
+	"github.com/velcro-xiv/velcro/ent/migrate"
 
-	"github.com/karashiiro/velcro/ent/message"
+	"github.com/velcro-xiv/velcro/ent/message"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

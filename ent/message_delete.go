@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/karashiiro/velcro/ent/message"
-	"github.com/karashiiro/velcro/ent/predicate"
+	"github.com/velcro-xiv/velcro/ent/message"
+	"github.com/velcro-xiv/velcro/ent/predicate"
 )
 
 // MessageDelete is the builder for deleting a Message entity.

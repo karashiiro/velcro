@@ -1,4 +1,4 @@
-module github.com/karashiiro/velcro
+module github.com/velcro-xiv/velcro
 
 go 1.19
 

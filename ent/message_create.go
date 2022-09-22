@@ -10,7 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/karashiiro/velcro/ent/message"
+	"github.com/velcro-xiv/velcro/ent/message"
 )
 
 // MessageCreate is the builder for creating a Message entity.

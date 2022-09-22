@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/karashiiro/velcro/ent"
+	"github.com/velcro-xiv/velcro/ent"
 
 	_ "github.com/mattn/go-sqlite3"
 )

@@ -19,6 +19,8 @@ const (
 	FieldDestinationAddress = "destination_address"
 	// FieldDestinationPort holds the string denoting the destination_port field in the database.
 	FieldDestinationPort = "destination_port"
+	// FieldData holds the string denoting the data field in the database.
+	FieldData = "data"
 	// Table holds the table name of the message in the database.
 	Table = "messages"
 )
@@ -32,6 +34,7 @@ var Columns = []string{
 	FieldSourcePort,
 	FieldDestinationAddress,
 	FieldDestinationPort,
+	FieldData,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

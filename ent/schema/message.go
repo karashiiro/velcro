@@ -19,6 +19,7 @@ func (Message) Fields() []ent.Field {
 		field.Int("source_port"),
 		field.String("destination_address"),
 		field.Int("destination_port"),
+		field.Bytes("data"),
 	}
 }
 

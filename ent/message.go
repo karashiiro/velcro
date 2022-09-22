@@ -28,6 +28,8 @@ type Message struct {
 	DestinationAddress string `json:"destination_address,omitempty"`
 	// DestinationPort holds the value of the "destination_port" field.
 	DestinationPort int `json:"destination_port,omitempty"`
+	// Data holds the value of the "data" field.
+	Data []byte `json:"data,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -35,6 +37,8 @@ func (*Message) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case message.FieldData:
+			values[i] = new([]byte)
 		case message.FieldID, message.FieldVersion, message.FieldSourcePort, message.FieldDestinationPort:
 			values[i] = new(sql.NullInt64)
 		case message.FieldSourceAddress, message.FieldDestinationAddress:
@@ -98,6 +102,12 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				m.DestinationPort = int(value.Int64)
 			}
+		case message.FieldData:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field data", values[i])
+			} else if value != nil {
+				m.Data = *value
+			}
 		}
 	}
 	return nil
@@ -143,6 +153,9 @@ func (m *Message) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("destination_port=")
 	builder.WriteString(fmt.Sprintf("%v", m.DestinationPort))
+	builder.WriteString(", ")
+	builder.WriteString("data=")
+	builder.WriteString(fmt.Sprintf("%v", m.Data))
 	builder.WriteByte(')')
 	return builder.String()
 }

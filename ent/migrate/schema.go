@@ -17,6 +17,7 @@ var (
 		{Name: "source_port", Type: field.TypeInt},
 		{Name: "destination_address", Type: field.TypeString},
 		{Name: "destination_port", Type: field.TypeInt},
+		{Name: "data", Type: field.TypeBytes},
 	}
 	// MessagesTable holds the schema information for the "messages" table.
 	MessagesTable = &schema.Table{

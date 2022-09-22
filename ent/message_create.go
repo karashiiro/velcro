@@ -56,6 +56,12 @@ func (mc *MessageCreate) SetDestinationPort(i int) *MessageCreate {
 	return mc
 }
 
+// SetData sets the "data" field.
+func (mc *MessageCreate) SetData(b []byte) *MessageCreate {
+	mc.mutation.SetData(b)
+	return mc
+}
+
 // Mutation returns the MessageMutation object of the builder.
 func (mc *MessageCreate) Mutation() *MessageMutation {
 	return mc.mutation
@@ -150,6 +156,9 @@ func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.DestinationPort(); !ok {
 		return &ValidationError{Name: "destination_port", err: errors.New(`ent: missing required field "Message.destination_port"`)}
 	}
+	if _, ok := mc.mutation.Data(); !ok {
+		return &ValidationError{Name: "data", err: errors.New(`ent: missing required field "Message.data"`)}
+	}
 	return nil
 }
 
@@ -224,6 +233,14 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 			Column: message.FieldDestinationPort,
 		})
 		_node.DestinationPort = value
+	}
+	if value, ok := mc.mutation.Data(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBytes,
+			Value:  value,
+			Column: message.FieldData,
+		})
+		_node.Data = value
 	}
 	return _node, _spec
 }

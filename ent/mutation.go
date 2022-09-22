@@ -42,6 +42,7 @@ type MessageMutation struct {
 	destination_address *string
 	destination_port    *int
 	adddestination_port *int
+	data                *[]byte
 	clearedFields       map[string]struct{}
 	done                bool
 	oldValue            func(context.Context) (*Message, error)
@@ -422,6 +423,42 @@ func (m *MessageMutation) ResetDestinationPort() {
 	m.adddestination_port = nil
 }
 
+// SetData sets the "data" field.
+func (m *MessageMutation) SetData(b []byte) {
+	m.data = &b
+}
+
+// Data returns the value of the "data" field in the mutation.
+func (m *MessageMutation) Data() (r []byte, exists bool) {
+	v := m.data
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldData returns the old "data" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldData(ctx context.Context) (v []byte, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldData is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldData requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldData: %w", err)
+	}
+	return oldValue.Data, nil
+}
+
+// ResetData resets all changes to the "data" field.
+func (m *MessageMutation) ResetData() {
+	m.data = nil
+}
+
 // Where appends a list predicates to the MessageMutation builder.
 func (m *MessageMutation) Where(ps ...predicate.Message) {
 	m.predicates = append(m.predicates, ps...)
@@ -441,7 +478,7 @@ func (m *MessageMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MessageMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
 	if m.timestamp != nil {
 		fields = append(fields, message.FieldTimestamp)
 	}
@@ -459,6 +496,9 @@ func (m *MessageMutation) Fields() []string {
 	}
 	if m.destination_port != nil {
 		fields = append(fields, message.FieldDestinationPort)
+	}
+	if m.data != nil {
+		fields = append(fields, message.FieldData)
 	}
 	return fields
 }
@@ -480,6 +520,8 @@ func (m *MessageMutation) Field(name string) (ent.Value, bool) {
 		return m.DestinationAddress()
 	case message.FieldDestinationPort:
 		return m.DestinationPort()
+	case message.FieldData:
+		return m.Data()
 	}
 	return nil, false
 }
@@ -501,6 +543,8 @@ func (m *MessageMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDestinationAddress(ctx)
 	case message.FieldDestinationPort:
 		return m.OldDestinationPort(ctx)
+	case message.FieldData:
+		return m.OldData(ctx)
 	}
 	return nil, fmt.Errorf("unknown Message field %s", name)
 }
@@ -551,6 +595,13 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDestinationPort(v)
+		return nil
+	case message.FieldData:
+		v, ok := value.([]byte)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetData(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Message field %s", name)
@@ -657,6 +708,9 @@ func (m *MessageMutation) ResetField(name string) error {
 		return nil
 	case message.FieldDestinationPort:
 		m.ResetDestinationPort()
+		return nil
+	case message.FieldData:
+		m.ResetData()
 		return nil
 	}
 	return fmt.Errorf("unknown Message field %s", name)

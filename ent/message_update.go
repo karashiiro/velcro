@@ -85,6 +85,12 @@ func (mu *MessageUpdate) AddDestinationPort(i int) *MessageUpdate {
 	return mu
 }
 
+// SetData sets the "data" field.
+func (mu *MessageUpdate) SetData(b []byte) *MessageUpdate {
+	mu.mutation.SetData(b)
+	return mu
+}
+
 // Mutation returns the MessageMutation object of the builder.
 func (mu *MessageUpdate) Mutation() *MessageMutation {
 	return mu.mutation
@@ -225,6 +231,13 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: message.FieldDestinationPort,
 		})
 	}
+	if value, ok := mu.mutation.Data(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBytes,
+			Value:  value,
+			Column: message.FieldData,
+		})
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{message.Label}
@@ -298,6 +311,12 @@ func (muo *MessageUpdateOne) SetDestinationPort(i int) *MessageUpdateOne {
 // AddDestinationPort adds i to the "destination_port" field.
 func (muo *MessageUpdateOne) AddDestinationPort(i int) *MessageUpdateOne {
 	muo.mutation.AddDestinationPort(i)
+	return muo
+}
+
+// SetData sets the "data" field.
+func (muo *MessageUpdateOne) SetData(b []byte) *MessageUpdateOne {
+	muo.mutation.SetData(b)
 	return muo
 }
 
@@ -469,6 +488,13 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: message.FieldDestinationPort,
+		})
+	}
+	if value, ok := muo.mutation.Data(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBytes,
+			Value:  value,
+			Column: message.FieldData,
 		})
 	}
 	_node = &Message{config: muo.config}

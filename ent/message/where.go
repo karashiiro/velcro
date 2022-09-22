@@ -122,6 +122,13 @@ func DestinationPort(v int) predicate.Message {
 	})
 }
 
+// Data applies equality check predicate on the "data" field. It's identical to DataEQ.
+func Data(v []byte) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldData), v))
+	})
+}
+
 // TimestampEQ applies the EQ predicate on the "timestamp" field.
 func TimestampEQ(v time.Time) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
@@ -573,6 +580,70 @@ func DestinationPortLT(v int) predicate.Message {
 func DestinationPortLTE(v int) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldDestinationPort), v))
+	})
+}
+
+// DataEQ applies the EQ predicate on the "data" field.
+func DataEQ(v []byte) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldData), v))
+	})
+}
+
+// DataNEQ applies the NEQ predicate on the "data" field.
+func DataNEQ(v []byte) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldData), v))
+	})
+}
+
+// DataIn applies the In predicate on the "data" field.
+func DataIn(vs ...[]byte) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldData), v...))
+	})
+}
+
+// DataNotIn applies the NotIn predicate on the "data" field.
+func DataNotIn(vs ...[]byte) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldData), v...))
+	})
+}
+
+// DataGT applies the GT predicate on the "data" field.
+func DataGT(v []byte) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldData), v))
+	})
+}
+
+// DataGTE applies the GTE predicate on the "data" field.
+func DataGTE(v []byte) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldData), v))
+	})
+}
+
+// DataLT applies the LT predicate on the "data" field.
+func DataLT(v []byte) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldData), v))
+	})
+}
+
+// DataLTE applies the LTE predicate on the "data" field.
+func DataLTE(v []byte) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldData), v))
 	})
 }
 

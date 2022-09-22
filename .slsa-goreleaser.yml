@@ -4,7 +4,7 @@ version: 1
 # (Optional) List of env variables used during compilation.
 env:
   - GO111MODULE=on
-  - CGO_ENABLED=0
+  - CGO_ENABLED=1
 
 # (Optional) Flags for the compiler.
 flags:
@@ -12,7 +12,7 @@ flags:
   - -tags=netgo
 
 # The OS to compile for. `GOOS` env variable will be set to this value.
-goos: linux
+goos: windows
 
 # The architecture to compile for. `GOARCH` env variable will be set to this value.
 goarch: amd64
@@ -26,7 +26,7 @@ main: ./cmd/velcro/main.go
 # Binary output name.
 # {{ .Os }} will be replaced by goos field in the config file.
 # {{ .Arch }} will be replaced by goarch field in the config file.
-binary: binary-{{ .Os }}-{{ .Arch }}
+binary: velcro-{{ .Os }}-{{ .Arch }}
 
 # (Optional) ldflags generated dynamically in the workflow, and set as the `evaluated-envs` input variables in the workflow.
 ldflags:

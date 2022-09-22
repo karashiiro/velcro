@@ -43,13 +43,15 @@ func init() {
 }
 
 type SniffRecord struct {
-	Timestamp          *time.Time `json:"t"`
-	Version            int        `json:"v"`
-	SourceAddress      string     `json:"src_addr"`
-	SourcePort         int        `json:"src_port"`
-	DestinationAddress string     `json:"dst_addr"`
-	DestinationPort    int        `json:"dst_port"`
-	Data               []byte     `json:"data"`
+	Timestamp          time.Time `json:"t"`
+	Version            int       `json:"v"`
+	Segment            int       `json:"segment"`
+	Opcode             *int      `json:"opcode"`
+	SourceAddress      string    `json:"src_addr"`
+	SourcePort         int       `json:"src_port"`
+	DestinationAddress string    `json:"dst_addr"`
+	DestinationPort    int       `json:"dst_port"`
+	Data               []byte    `json:"data"`
 }
 
 func (s *SniffRecord) GetSourceAddress() net.IP {
@@ -62,8 +64,10 @@ func (s *SniffRecord) GetDestinationAddress() net.IP {
 
 func CreateMessage(ctx context.Context, client *ent.Client, sniff *SniffRecord) (*ent.Message, error) {
 	return client.Message.Create().
-		SetTimestamp(*sniff.Timestamp).
+		SetTimestamp(sniff.Timestamp).
 		SetVersion(sniff.Version).
+		SetSegment(sniff.Segment).
+		SetNillableOpcode(sniff.Opcode).
 		SetSourceAddress(sniff.GetSourceAddress().String()).
 		SetSourcePort(sniff.SourcePort).
 		SetDestinationAddress(sniff.GetDestinationAddress().String()).

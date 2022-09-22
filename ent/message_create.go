@@ -32,6 +32,34 @@ func (mc *MessageCreate) SetVersion(i int) *MessageCreate {
 	return mc
 }
 
+// SetSegment sets the "segment" field.
+func (mc *MessageCreate) SetSegment(i int) *MessageCreate {
+	mc.mutation.SetSegment(i)
+	return mc
+}
+
+// SetNillableSegment sets the "segment" field if the given value is not nil.
+func (mc *MessageCreate) SetNillableSegment(i *int) *MessageCreate {
+	if i != nil {
+		mc.SetSegment(*i)
+	}
+	return mc
+}
+
+// SetOpcode sets the "opcode" field.
+func (mc *MessageCreate) SetOpcode(i int) *MessageCreate {
+	mc.mutation.SetOpcode(i)
+	return mc
+}
+
+// SetNillableOpcode sets the "opcode" field if the given value is not nil.
+func (mc *MessageCreate) SetNillableOpcode(i *int) *MessageCreate {
+	if i != nil {
+		mc.SetOpcode(*i)
+	}
+	return mc
+}
+
 // SetSourceAddress sets the "source_address" field.
 func (mc *MessageCreate) SetSourceAddress(s string) *MessageCreate {
 	mc.mutation.SetSourceAddress(s)
@@ -73,6 +101,7 @@ func (mc *MessageCreate) Save(ctx context.Context) (*Message, error) {
 		err  error
 		node *Message
 	)
+	mc.defaults()
 	if len(mc.hooks) == 0 {
 		if err = mc.check(); err != nil {
 			return nil, err
@@ -136,6 +165,14 @@ func (mc *MessageCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (mc *MessageCreate) defaults() {
+	if _, ok := mc.mutation.Segment(); !ok {
+		v := message.DefaultSegment
+		mc.mutation.SetSegment(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.Timestamp(); !ok {
@@ -143,6 +180,9 @@ func (mc *MessageCreate) check() error {
 	}
 	if _, ok := mc.mutation.Version(); !ok {
 		return &ValidationError{Name: "version", err: errors.New(`ent: missing required field "Message.version"`)}
+	}
+	if _, ok := mc.mutation.Segment(); !ok {
+		return &ValidationError{Name: "segment", err: errors.New(`ent: missing required field "Message.segment"`)}
 	}
 	if _, ok := mc.mutation.SourceAddress(); !ok {
 		return &ValidationError{Name: "source_address", err: errors.New(`ent: missing required field "Message.source_address"`)}
@@ -202,6 +242,22 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 		})
 		_node.Version = value
 	}
+	if value, ok := mc.mutation.Segment(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegment,
+		})
+		_node.Segment = value
+	}
+	if value, ok := mc.mutation.Opcode(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+		_node.Opcode = &value
+	}
 	if value, ok := mc.mutation.SourceAddress(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -259,6 +315,7 @@ func (mcb *MessageCreateBulk) Save(ctx context.Context) ([]*Message, error) {
 	for i := range mcb.builders {
 		func(i int, root context.Context) {
 			builder := mcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*MessageMutation)
 				if !ok {

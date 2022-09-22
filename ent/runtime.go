@@ -2,8 +2,19 @@
 
 package ent
 
+import (
+	"github.com/velcro-xiv/velcro/ent/message"
+	"github.com/velcro-xiv/velcro/ent/schema"
+)
+
 // The init function reads all schema descriptors with runtime code
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	messageFields := schema.Message{}.Fields()
+	_ = messageFields
+	// messageDescSegment is the schema descriptor for segment field.
+	messageDescSegment := messageFields[2].Descriptor()
+	// message.DefaultSegment holds the default value on creation for the segment field.
+	message.DefaultSegment = messageDescSegment.Default.(int)
 }

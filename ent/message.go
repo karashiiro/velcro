@@ -20,6 +20,10 @@ type Message struct {
 	Timestamp time.Time `json:"timestamp,omitempty"`
 	// Version holds the value of the "version" field.
 	Version int `json:"version,omitempty"`
+	// Segment holds the value of the "segment" field.
+	Segment int `json:"segment,omitempty"`
+	// Opcode holds the value of the "opcode" field.
+	Opcode *int `json:"opcode,omitempty"`
 	// SourceAddress holds the value of the "source_address" field.
 	SourceAddress string `json:"source_address,omitempty"`
 	// SourcePort holds the value of the "source_port" field.
@@ -39,7 +43,7 @@ func (*Message) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case message.FieldData:
 			values[i] = new([]byte)
-		case message.FieldID, message.FieldVersion, message.FieldSourcePort, message.FieldDestinationPort:
+		case message.FieldID, message.FieldVersion, message.FieldSegment, message.FieldOpcode, message.FieldSourcePort, message.FieldDestinationPort:
 			values[i] = new(sql.NullInt64)
 		case message.FieldSourceAddress, message.FieldDestinationAddress:
 			values[i] = new(sql.NullString)
@@ -77,6 +81,19 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field version", values[i])
 			} else if value.Valid {
 				m.Version = int(value.Int64)
+			}
+		case message.FieldSegment:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field segment", values[i])
+			} else if value.Valid {
+				m.Segment = int(value.Int64)
+			}
+		case message.FieldOpcode:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field opcode", values[i])
+			} else if value.Valid {
+				m.Opcode = new(int)
+				*m.Opcode = int(value.Int64)
 			}
 		case message.FieldSourceAddress:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -141,6 +158,14 @@ func (m *Message) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("version=")
 	builder.WriteString(fmt.Sprintf("%v", m.Version))
+	builder.WriteString(", ")
+	builder.WriteString("segment=")
+	builder.WriteString(fmt.Sprintf("%v", m.Segment))
+	builder.WriteString(", ")
+	if v := m.Opcode; v != nil {
+		builder.WriteString("opcode=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("source_address=")
 	builder.WriteString(m.SourceAddress)

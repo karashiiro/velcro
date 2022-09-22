@@ -94,6 +94,20 @@ func Version(v int) predicate.Message {
 	})
 }
 
+// Segment applies equality check predicate on the "segment" field. It's identical to SegmentEQ.
+func Segment(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSegment), v))
+	})
+}
+
+// Opcode applies equality check predicate on the "opcode" field. It's identical to OpcodeEQ.
+func Opcode(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOpcode), v))
+	})
+}
+
 // SourceAddress applies equality check predicate on the "source_address" field. It's identical to SourceAddressEQ.
 func SourceAddress(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
@@ -254,6 +268,148 @@ func VersionLT(v int) predicate.Message {
 func VersionLTE(v int) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldVersion), v))
+	})
+}
+
+// SegmentEQ applies the EQ predicate on the "segment" field.
+func SegmentEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSegment), v))
+	})
+}
+
+// SegmentNEQ applies the NEQ predicate on the "segment" field.
+func SegmentNEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSegment), v))
+	})
+}
+
+// SegmentIn applies the In predicate on the "segment" field.
+func SegmentIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSegment), v...))
+	})
+}
+
+// SegmentNotIn applies the NotIn predicate on the "segment" field.
+func SegmentNotIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSegment), v...))
+	})
+}
+
+// SegmentGT applies the GT predicate on the "segment" field.
+func SegmentGT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSegment), v))
+	})
+}
+
+// SegmentGTE applies the GTE predicate on the "segment" field.
+func SegmentGTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSegment), v))
+	})
+}
+
+// SegmentLT applies the LT predicate on the "segment" field.
+func SegmentLT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSegment), v))
+	})
+}
+
+// SegmentLTE applies the LTE predicate on the "segment" field.
+func SegmentLTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSegment), v))
+	})
+}
+
+// OpcodeEQ applies the EQ predicate on the "opcode" field.
+func OpcodeEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeNEQ applies the NEQ predicate on the "opcode" field.
+func OpcodeNEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeIn applies the In predicate on the "opcode" field.
+func OpcodeIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldOpcode), v...))
+	})
+}
+
+// OpcodeNotIn applies the NotIn predicate on the "opcode" field.
+func OpcodeNotIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldOpcode), v...))
+	})
+}
+
+// OpcodeGT applies the GT predicate on the "opcode" field.
+func OpcodeGT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeGTE applies the GTE predicate on the "opcode" field.
+func OpcodeGTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeLT applies the LT predicate on the "opcode" field.
+func OpcodeLT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeLTE applies the LTE predicate on the "opcode" field.
+func OpcodeLTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeIsNil applies the IsNil predicate on the "opcode" field.
+func OpcodeIsNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldOpcode)))
+	})
+}
+
+// OpcodeNotNil applies the NotNil predicate on the "opcode" field.
+func OpcodeNotNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldOpcode)))
 	})
 }
 

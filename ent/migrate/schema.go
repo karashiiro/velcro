@@ -13,6 +13,8 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "timestamp", Type: field.TypeTime},
 		{Name: "version", Type: field.TypeInt},
+		{Name: "segment", Type: field.TypeInt, Default: 0},
+		{Name: "opcode", Type: field.TypeInt, Nullable: true},
 		{Name: "source_address", Type: field.TypeString},
 		{Name: "source_port", Type: field.TypeInt},
 		{Name: "destination_address", Type: field.TypeString},

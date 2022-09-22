@@ -15,6 +15,8 @@ func (Message) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("timestamp"),
 		field.Int("version"),
+		field.Int("segment").Default(0),
+		field.Int("opcode").Optional().Nillable(),
 		field.String("source_address"),
 		field.Int("source_port"),
 		field.String("destination_address"),

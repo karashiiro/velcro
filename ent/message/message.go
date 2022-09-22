@@ -11,6 +11,10 @@ const (
 	FieldTimestamp = "timestamp"
 	// FieldVersion holds the string denoting the version field in the database.
 	FieldVersion = "version"
+	// FieldSegment holds the string denoting the segment field in the database.
+	FieldSegment = "segment"
+	// FieldOpcode holds the string denoting the opcode field in the database.
+	FieldOpcode = "opcode"
 	// FieldSourceAddress holds the string denoting the source_address field in the database.
 	FieldSourceAddress = "source_address"
 	// FieldSourcePort holds the string denoting the source_port field in the database.
@@ -30,6 +34,8 @@ var Columns = []string{
 	FieldID,
 	FieldTimestamp,
 	FieldVersion,
+	FieldSegment,
+	FieldOpcode,
 	FieldSourceAddress,
 	FieldSourcePort,
 	FieldDestinationAddress,
@@ -46,3 +52,8 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultSegment holds the default value on creation for the "segment" field.
+	DefaultSegment int
+)

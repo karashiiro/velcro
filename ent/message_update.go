@@ -47,6 +47,54 @@ func (mu *MessageUpdate) AddVersion(i int) *MessageUpdate {
 	return mu
 }
 
+// SetSegment sets the "segment" field.
+func (mu *MessageUpdate) SetSegment(i int) *MessageUpdate {
+	mu.mutation.ResetSegment()
+	mu.mutation.SetSegment(i)
+	return mu
+}
+
+// SetNillableSegment sets the "segment" field if the given value is not nil.
+func (mu *MessageUpdate) SetNillableSegment(i *int) *MessageUpdate {
+	if i != nil {
+		mu.SetSegment(*i)
+	}
+	return mu
+}
+
+// AddSegment adds i to the "segment" field.
+func (mu *MessageUpdate) AddSegment(i int) *MessageUpdate {
+	mu.mutation.AddSegment(i)
+	return mu
+}
+
+// SetOpcode sets the "opcode" field.
+func (mu *MessageUpdate) SetOpcode(i int) *MessageUpdate {
+	mu.mutation.ResetOpcode()
+	mu.mutation.SetOpcode(i)
+	return mu
+}
+
+// SetNillableOpcode sets the "opcode" field if the given value is not nil.
+func (mu *MessageUpdate) SetNillableOpcode(i *int) *MessageUpdate {
+	if i != nil {
+		mu.SetOpcode(*i)
+	}
+	return mu
+}
+
+// AddOpcode adds i to the "opcode" field.
+func (mu *MessageUpdate) AddOpcode(i int) *MessageUpdate {
+	mu.mutation.AddOpcode(i)
+	return mu
+}
+
+// ClearOpcode clears the value of the "opcode" field.
+func (mu *MessageUpdate) ClearOpcode() *MessageUpdate {
+	mu.mutation.ClearOpcode()
+	return mu
+}
+
 // SetSourceAddress sets the "source_address" field.
 func (mu *MessageUpdate) SetSourceAddress(s string) *MessageUpdate {
 	mu.mutation.SetSourceAddress(s)
@@ -189,6 +237,40 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: message.FieldVersion,
 		})
 	}
+	if value, ok := mu.mutation.Segment(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegment,
+		})
+	}
+	if value, ok := mu.mutation.AddedSegment(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegment,
+		})
+	}
+	if value, ok := mu.mutation.Opcode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if value, ok := mu.mutation.AddedOpcode(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if mu.mutation.OpcodeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: message.FieldOpcode,
+		})
+	}
 	if value, ok := mu.mutation.SourceAddress(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -273,6 +355,54 @@ func (muo *MessageUpdateOne) SetVersion(i int) *MessageUpdateOne {
 // AddVersion adds i to the "version" field.
 func (muo *MessageUpdateOne) AddVersion(i int) *MessageUpdateOne {
 	muo.mutation.AddVersion(i)
+	return muo
+}
+
+// SetSegment sets the "segment" field.
+func (muo *MessageUpdateOne) SetSegment(i int) *MessageUpdateOne {
+	muo.mutation.ResetSegment()
+	muo.mutation.SetSegment(i)
+	return muo
+}
+
+// SetNillableSegment sets the "segment" field if the given value is not nil.
+func (muo *MessageUpdateOne) SetNillableSegment(i *int) *MessageUpdateOne {
+	if i != nil {
+		muo.SetSegment(*i)
+	}
+	return muo
+}
+
+// AddSegment adds i to the "segment" field.
+func (muo *MessageUpdateOne) AddSegment(i int) *MessageUpdateOne {
+	muo.mutation.AddSegment(i)
+	return muo
+}
+
+// SetOpcode sets the "opcode" field.
+func (muo *MessageUpdateOne) SetOpcode(i int) *MessageUpdateOne {
+	muo.mutation.ResetOpcode()
+	muo.mutation.SetOpcode(i)
+	return muo
+}
+
+// SetNillableOpcode sets the "opcode" field if the given value is not nil.
+func (muo *MessageUpdateOne) SetNillableOpcode(i *int) *MessageUpdateOne {
+	if i != nil {
+		muo.SetOpcode(*i)
+	}
+	return muo
+}
+
+// AddOpcode adds i to the "opcode" field.
+func (muo *MessageUpdateOne) AddOpcode(i int) *MessageUpdateOne {
+	muo.mutation.AddOpcode(i)
+	return muo
+}
+
+// ClearOpcode clears the value of the "opcode" field.
+func (muo *MessageUpdateOne) ClearOpcode() *MessageUpdateOne {
+	muo.mutation.ClearOpcode()
 	return muo
 }
 
@@ -446,6 +576,40 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: message.FieldVersion,
+		})
+	}
+	if value, ok := muo.mutation.Segment(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegment,
+		})
+	}
+	if value, ok := muo.mutation.AddedSegment(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegment,
+		})
+	}
+	if value, ok := muo.mutation.Opcode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if value, ok := muo.mutation.AddedOpcode(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if muo.mutation.OpcodeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: message.FieldOpcode,
 		})
 	}
 	if value, ok := muo.mutation.SourceAddress(); ok {

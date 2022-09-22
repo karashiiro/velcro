@@ -79,7 +79,7 @@ func CreateMessage(ctx context.Context, client *ent.Client, sniff *SniffRecord) 
 func main() {
 	client, err := ent.Open(dialect.SQLite, "file:velcro.db?cache=shared")
 	if err != nil {
-		log.Fatalf("failed opening connection to sqlite: %v", err)
+		log.Fatalf("failed opening connection to sqlite: %v\n", err)
 	}
 	defer client.Close()
 
@@ -88,7 +88,7 @@ func main() {
 
 	// Run the auto migration tool.
 	if err := client.Schema.Create(context.Background()); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+		log.Fatalf("failed creating schema resources: %v\n", err)
 	}
 
 	// Store data in the database.
@@ -97,7 +97,7 @@ func main() {
 		buf, err := reader.ReadBytes('\n')
 		if err != nil {
 			if err != io.EOF {
-				log.Fatalf("failed reading standard input: %v", err)
+				log.Fatalf("failed reading standard input: %v\n", err)
 			}
 
 			continue
@@ -108,14 +108,14 @@ func main() {
 		sniff := SniffRecord{}
 		err = json.Unmarshal(buf, &sniff)
 		if err != nil {
-			log.Fatalf("failed to unmarshal record: %v", err)
+			log.Fatalf("failed to unmarshal record: %v\n", err)
 		}
 
 		log.Printf("parsed new data: %v\n", &sniff)
 
 		message, err := CreateMessage(context.Background(), client, &sniff)
 		if err != nil {
-			log.Fatalf("failed to store record: %v", err)
+			log.Printf("failed to store record: %v\n", err)
 		}
 
 		log.Println("message was created: ", message)

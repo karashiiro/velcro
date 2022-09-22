@@ -77,7 +77,7 @@ func CreateMessage(ctx context.Context, client *ent.Client, sniff *SniffRecord) 
 }
 
 func main() {
-	client, err := ent.Open(dialect.SQLite, "file:velcro.db?cache=shared")
+	client, err := ent.Open(dialect.SQLite, "file:velcro.db?cache=shared&journal_mode=WAL")
 	if err != nil {
 		log.Fatalf("failed opening connection to sqlite: %v\n", err)
 	}

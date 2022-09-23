@@ -1,12 +1,18 @@
 # velcro
-Archive data from [xivsniff](https://github.com/velcro-xiv/xivsniff).
+Archive Velcro JSON Lines data to SQLite. Designed to be used with [xivsniff](https://github.com/velcro-xiv/xivsniff).
 
 ## Usage
+Data will be saved to `velcro.db` in your working directory.
+
+### From a file
+```zsh
+cat <file> | velcro
+```
+
+### With `xivsniff`
 ```zsh
 xivsniff | velcro
 ```
-
-Data will be saved to `velcro.db` in your working directory.
 
 ## Viewing your data
 [DBeaver](https://dbeaver.io/) is a useful tool for viewing archived packet data.

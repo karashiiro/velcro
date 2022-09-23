@@ -42,10 +42,15 @@ func main() {
 		buf, err := reader.ReadBytes('\n')
 		if err != nil {
 			if err != io.EOF {
-				logger.LogError(context.Background(), fmt.Sprintf("failed reading standard input: %v\n", err))
+				logger.LogError(context.Background(), fmt.Sprintf("failed reading standard input: %v", err))
 			}
 
 			continue
+		}
+
+		_, err = fmt.Print(string(buf))
+		if err != nil {
+			logger.LogError(context.Background(), fmt.Sprintf("%v\n", err))
 		}
 
 		logger.LogDebug(context.Background(), "found new data")

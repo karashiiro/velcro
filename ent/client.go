@@ -10,6 +10,7 @@ import (
 
 	"github.com/velcro-xiv/velcro/ent/migrate"
 
+	"github.com/velcro-xiv/velcro/ent/logevent"
 	"github.com/velcro-xiv/velcro/ent/message"
 
 	"entgo.io/ent/dialect"
@@ -21,6 +22,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// LogEvent is the client for interacting with the LogEvent builders.
+	LogEvent *LogEventClient
 	// Message is the client for interacting with the Message builders.
 	Message *MessageClient
 }
@@ -36,6 +39,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.LogEvent = NewLogEventClient(c.config)
 	c.Message = NewMessageClient(c.config)
 }
 
@@ -68,9 +72,10 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		Message: NewMessageClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		LogEvent: NewLogEventClient(cfg),
+		Message:  NewMessageClient(cfg),
 	}, nil
 }
 
@@ -88,16 +93,17 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		Message: NewMessageClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		LogEvent: NewLogEventClient(cfg),
+		Message:  NewMessageClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Message.
+//		LogEvent.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -119,7 +125,98 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.LogEvent.Use(hooks...)
 	c.Message.Use(hooks...)
+}
+
+// LogEventClient is a client for the LogEvent schema.
+type LogEventClient struct {
+	config
+}
+
+// NewLogEventClient returns a client for the LogEvent from the given config.
+func NewLogEventClient(c config) *LogEventClient {
+	return &LogEventClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `logevent.Hooks(f(g(h())))`.
+func (c *LogEventClient) Use(hooks ...Hook) {
+	c.hooks.LogEvent = append(c.hooks.LogEvent, hooks...)
+}
+
+// Create returns a builder for creating a LogEvent entity.
+func (c *LogEventClient) Create() *LogEventCreate {
+	mutation := newLogEventMutation(c.config, OpCreate)
+	return &LogEventCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of LogEvent entities.
+func (c *LogEventClient) CreateBulk(builders ...*LogEventCreate) *LogEventCreateBulk {
+	return &LogEventCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for LogEvent.
+func (c *LogEventClient) Update() *LogEventUpdate {
+	mutation := newLogEventMutation(c.config, OpUpdate)
+	return &LogEventUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *LogEventClient) UpdateOne(le *LogEvent) *LogEventUpdateOne {
+	mutation := newLogEventMutation(c.config, OpUpdateOne, withLogEvent(le))
+	return &LogEventUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *LogEventClient) UpdateOneID(id int) *LogEventUpdateOne {
+	mutation := newLogEventMutation(c.config, OpUpdateOne, withLogEventID(id))
+	return &LogEventUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for LogEvent.
+func (c *LogEventClient) Delete() *LogEventDelete {
+	mutation := newLogEventMutation(c.config, OpDelete)
+	return &LogEventDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *LogEventClient) DeleteOne(le *LogEvent) *LogEventDeleteOne {
+	return c.DeleteOneID(le.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *LogEventClient) DeleteOneID(id int) *LogEventDeleteOne {
+	builder := c.Delete().Where(logevent.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &LogEventDeleteOne{builder}
+}
+
+// Query returns a query builder for LogEvent.
+func (c *LogEventClient) Query() *LogEventQuery {
+	return &LogEventQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a LogEvent entity by its id.
+func (c *LogEventClient) Get(ctx context.Context, id int) (*LogEvent, error) {
+	return c.Query().Where(logevent.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *LogEventClient) GetX(ctx context.Context, id int) *LogEvent {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *LogEventClient) Hooks() []Hook {
+	return c.hooks.LogEvent
 }
 
 // MessageClient is a client for the Message schema.

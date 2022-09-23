@@ -9,6 +9,19 @@ import (
 	"github.com/velcro-xiv/velcro/ent"
 )
 
+// The LogEventFunc type is an adapter to allow the use of ordinary
+// function as LogEvent mutator.
+type LogEventFunc func(context.Context, *ent.LogEventMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LogEventFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.LogEventMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LogEventMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The MessageFunc type is an adapter to allow the use of ordinary
 // function as Message mutator.
 type MessageFunc func(context.Context, *ent.MessageMutation) (ent.Value, error)

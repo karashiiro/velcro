@@ -8,6 +8,19 @@ import (
 )
 
 var (
+	// LogEventsColumns holds the columns for the "log_events" table.
+	LogEventsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "timestamp", Type: field.TypeTime},
+		{Name: "level", Type: field.TypeInt},
+		{Name: "message", Type: field.TypeString},
+	}
+	// LogEventsTable holds the schema information for the "log_events" table.
+	LogEventsTable = &schema.Table{
+		Name:       "log_events",
+		Columns:    LogEventsColumns,
+		PrimaryKey: []*schema.Column{LogEventsColumns[0]},
+	}
 	// MessagesColumns holds the columns for the "messages" table.
 	MessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -29,6 +42,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		LogEventsTable,
 		MessagesTable,
 	}
 )

@@ -1,5 +1,6 @@
 # velcro
-Archive Velcro JSON Lines data to SQLite. Designed to be used with [xivsniff](https://github.com/velcro-xiv/xivsniff).
+Archive Velcro JSON Lines data to SQLite. Designed to be used with [xivsniff](https://github.com/velcro-xiv/xivsniff). Velcro prints
+all data it receives to standard output, so additional programs can be chained in front of it.
 
 ## Usage
 Data will be saved to `velcro.db` in your working directory.

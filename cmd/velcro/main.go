@@ -76,6 +76,54 @@ func CreateMessage(ctx context.Context, client *ent.Client, sniff *SniffRecord) 
 		Save(ctx)
 }
 
+type Archiver struct {
+	client  *ent.Client
+	q       chan *SniffRecord
+	stop    chan bool
+	stopped chan bool
+}
+
+func NewArchiver(client *ent.Client) *Archiver {
+	return &Archiver{
+		client:  client,
+		q:       make(chan *SniffRecord),
+		stop:    make(chan bool, 1),
+		stopped: make(chan bool, 1),
+	}
+}
+
+func (a *Archiver) Store(sr *SniffRecord) {
+	a.q <- sr
+}
+
+func (a *Archiver) Process() {
+	go func() {
+	outer:
+		for {
+			select {
+			case <-a.stop:
+				break outer
+			case sr := <-a.q:
+				message, err := CreateMessage(context.Background(), a.client, sr)
+				if err != nil {
+					log.Printf("failed to store record: %v\n", err)
+				}
+
+				log.Println("message was created: ", message)
+			default:
+				time.Sleep(time.Nanosecond)
+			}
+		}
+
+		a.stopped <- true
+	}()
+}
+
+func (a *Archiver) Stop() {
+	a.stop <- true
+	<-a.stopped
+}
+
 func main() {
 	client, err := ent.Open(dialect.SQLite, "file:velcro.db?cache=shared&journal_mode=WAL")
 	if err != nil {
@@ -92,6 +140,9 @@ func main() {
 	}
 
 	// Store data in the database.
+	archiver := NewArchiver(client)
+	archiver.Process()
+
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		buf, err := reader.ReadBytes('\n')
@@ -113,11 +164,6 @@ func main() {
 
 		log.Printf("parsed new data: %v\n", &sniff)
 
-		message, err := CreateMessage(context.Background(), client, &sniff)
-		if err != nil {
-			log.Printf("failed to store record: %v\n", err)
-		}
-
-		log.Println("message was created: ", message)
+		archiver.Store(&sniff)
 	}
 }

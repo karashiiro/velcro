@@ -57,7 +57,7 @@ func (a *Archiver) Process() {
 					a.logger.LogError(context.Background(), fmt.Sprintf("failed to store record: %v\n", err))
 				}
 			default:
-				time.Sleep(time.Nanosecond)
+				time.Sleep(time.Second)
 			}
 		}
 

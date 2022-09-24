@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	client, err := ent.Open(dialect.SQLite, "file:velcro.db?cache=shared&journal_mode=WAL")
+	client, err := ent.Open(dialect.SQLite, "file:velcro.db?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(8000)&_pragma=journal_size_limit(100000000)")
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed opening connection to sqlite: %v\n", err)
 		os.Exit(1)

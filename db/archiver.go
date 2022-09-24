@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/velcro-xiv/velcro/ent"
 )
@@ -56,8 +55,6 @@ func (a *Archiver) Process() {
 				if err != nil {
 					a.logger.LogError(context.Background(), fmt.Sprintf("failed to store record: %v\n", err))
 				}
-			default:
-				time.Sleep(time.Second)
 			}
 		}
 

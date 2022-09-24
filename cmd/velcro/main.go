@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"time"
 
 	"entgo.io/ent/dialect"
 	"github.com/velcro-xiv/velcro/db"
@@ -46,7 +45,6 @@ func main() {
 				logger.LogError(context.Background(), fmt.Sprintf("failed reading standard input: %v", err))
 			}
 
-			time.Sleep(time.Second)
 			continue
 		}
 

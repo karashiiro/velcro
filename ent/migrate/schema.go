@@ -26,13 +26,18 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "timestamp", Type: field.TypeTime},
 		{Name: "version", Type: field.TypeInt},
-		{Name: "segment", Type: field.TypeInt, Default: 0},
-		{Name: "opcode", Type: field.TypeInt, Nullable: true},
 		{Name: "source_address", Type: field.TypeString},
 		{Name: "source_port", Type: field.TypeInt},
 		{Name: "destination_address", Type: field.TypeString},
 		{Name: "destination_port", Type: field.TypeInt},
-		{Name: "data", Type: field.TypeBytes},
+		{Name: "size", Type: field.TypeUint32},
+		{Name: "source_actor", Type: field.TypeUint32},
+		{Name: "target_actor", Type: field.TypeUint32},
+		{Name: "segment_type", Type: field.TypeInt},
+		{Name: "opcode", Type: field.TypeInt, Nullable: true},
+		{Name: "server", Type: field.TypeInt, Nullable: true},
+		{Name: "timestamp_raw", Type: field.TypeUint32, Nullable: true},
+		{Name: "data", Type: field.TypeBytes, Nullable: true},
 	}
 	// MessagesTable holds the schema information for the "messages" table.
 	MessagesTable = &schema.Table{

@@ -32,34 +32,6 @@ func (mc *MessageCreate) SetVersion(i int) *MessageCreate {
 	return mc
 }
 
-// SetSegment sets the "segment" field.
-func (mc *MessageCreate) SetSegment(i int) *MessageCreate {
-	mc.mutation.SetSegment(i)
-	return mc
-}
-
-// SetNillableSegment sets the "segment" field if the given value is not nil.
-func (mc *MessageCreate) SetNillableSegment(i *int) *MessageCreate {
-	if i != nil {
-		mc.SetSegment(*i)
-	}
-	return mc
-}
-
-// SetOpcode sets the "opcode" field.
-func (mc *MessageCreate) SetOpcode(i int) *MessageCreate {
-	mc.mutation.SetOpcode(i)
-	return mc
-}
-
-// SetNillableOpcode sets the "opcode" field if the given value is not nil.
-func (mc *MessageCreate) SetNillableOpcode(i *int) *MessageCreate {
-	if i != nil {
-		mc.SetOpcode(*i)
-	}
-	return mc
-}
-
 // SetSourceAddress sets the "source_address" field.
 func (mc *MessageCreate) SetSourceAddress(s string) *MessageCreate {
 	mc.mutation.SetSourceAddress(s)
@@ -84,6 +56,72 @@ func (mc *MessageCreate) SetDestinationPort(i int) *MessageCreate {
 	return mc
 }
 
+// SetSize sets the "size" field.
+func (mc *MessageCreate) SetSize(u uint32) *MessageCreate {
+	mc.mutation.SetSize(u)
+	return mc
+}
+
+// SetSourceActor sets the "source_actor" field.
+func (mc *MessageCreate) SetSourceActor(u uint32) *MessageCreate {
+	mc.mutation.SetSourceActor(u)
+	return mc
+}
+
+// SetTargetActor sets the "target_actor" field.
+func (mc *MessageCreate) SetTargetActor(u uint32) *MessageCreate {
+	mc.mutation.SetTargetActor(u)
+	return mc
+}
+
+// SetSegmentType sets the "segment_type" field.
+func (mc *MessageCreate) SetSegmentType(i int) *MessageCreate {
+	mc.mutation.SetSegmentType(i)
+	return mc
+}
+
+// SetOpcode sets the "opcode" field.
+func (mc *MessageCreate) SetOpcode(i int) *MessageCreate {
+	mc.mutation.SetOpcode(i)
+	return mc
+}
+
+// SetNillableOpcode sets the "opcode" field if the given value is not nil.
+func (mc *MessageCreate) SetNillableOpcode(i *int) *MessageCreate {
+	if i != nil {
+		mc.SetOpcode(*i)
+	}
+	return mc
+}
+
+// SetServer sets the "server" field.
+func (mc *MessageCreate) SetServer(i int) *MessageCreate {
+	mc.mutation.SetServer(i)
+	return mc
+}
+
+// SetNillableServer sets the "server" field if the given value is not nil.
+func (mc *MessageCreate) SetNillableServer(i *int) *MessageCreate {
+	if i != nil {
+		mc.SetServer(*i)
+	}
+	return mc
+}
+
+// SetTimestampRaw sets the "timestamp_raw" field.
+func (mc *MessageCreate) SetTimestampRaw(u uint32) *MessageCreate {
+	mc.mutation.SetTimestampRaw(u)
+	return mc
+}
+
+// SetNillableTimestampRaw sets the "timestamp_raw" field if the given value is not nil.
+func (mc *MessageCreate) SetNillableTimestampRaw(u *uint32) *MessageCreate {
+	if u != nil {
+		mc.SetTimestampRaw(*u)
+	}
+	return mc
+}
+
 // SetData sets the "data" field.
 func (mc *MessageCreate) SetData(b []byte) *MessageCreate {
 	mc.mutation.SetData(b)
@@ -101,7 +139,6 @@ func (mc *MessageCreate) Save(ctx context.Context) (*Message, error) {
 		err  error
 		node *Message
 	)
-	mc.defaults()
 	if len(mc.hooks) == 0 {
 		if err = mc.check(); err != nil {
 			return nil, err
@@ -165,14 +202,6 @@ func (mc *MessageCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (mc *MessageCreate) defaults() {
-	if _, ok := mc.mutation.Segment(); !ok {
-		v := message.DefaultSegment
-		mc.mutation.SetSegment(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.Timestamp(); !ok {
@@ -180,9 +209,6 @@ func (mc *MessageCreate) check() error {
 	}
 	if _, ok := mc.mutation.Version(); !ok {
 		return &ValidationError{Name: "version", err: errors.New(`ent: missing required field "Message.version"`)}
-	}
-	if _, ok := mc.mutation.Segment(); !ok {
-		return &ValidationError{Name: "segment", err: errors.New(`ent: missing required field "Message.segment"`)}
 	}
 	if _, ok := mc.mutation.SourceAddress(); !ok {
 		return &ValidationError{Name: "source_address", err: errors.New(`ent: missing required field "Message.source_address"`)}
@@ -196,8 +222,17 @@ func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.DestinationPort(); !ok {
 		return &ValidationError{Name: "destination_port", err: errors.New(`ent: missing required field "Message.destination_port"`)}
 	}
-	if _, ok := mc.mutation.Data(); !ok {
-		return &ValidationError{Name: "data", err: errors.New(`ent: missing required field "Message.data"`)}
+	if _, ok := mc.mutation.Size(); !ok {
+		return &ValidationError{Name: "size", err: errors.New(`ent: missing required field "Message.size"`)}
+	}
+	if _, ok := mc.mutation.SourceActor(); !ok {
+		return &ValidationError{Name: "source_actor", err: errors.New(`ent: missing required field "Message.source_actor"`)}
+	}
+	if _, ok := mc.mutation.TargetActor(); !ok {
+		return &ValidationError{Name: "target_actor", err: errors.New(`ent: missing required field "Message.target_actor"`)}
+	}
+	if _, ok := mc.mutation.SegmentType(); !ok {
+		return &ValidationError{Name: "segment_type", err: errors.New(`ent: missing required field "Message.segment_type"`)}
 	}
 	return nil
 }
@@ -242,22 +277,6 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 		})
 		_node.Version = value
 	}
-	if value, ok := mc.mutation.Segment(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldSegment,
-		})
-		_node.Segment = value
-	}
-	if value, ok := mc.mutation.Opcode(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldOpcode,
-		})
-		_node.Opcode = &value
-	}
 	if value, ok := mc.mutation.SourceAddress(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -290,13 +309,69 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 		})
 		_node.DestinationPort = value
 	}
+	if value, ok := mc.mutation.Size(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSize,
+		})
+		_node.Size = value
+	}
+	if value, ok := mc.mutation.SourceActor(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSourceActor,
+		})
+		_node.SourceActor = value
+	}
+	if value, ok := mc.mutation.TargetActor(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTargetActor,
+		})
+		_node.TargetActor = value
+	}
+	if value, ok := mc.mutation.SegmentType(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegmentType,
+		})
+		_node.SegmentType = value
+	}
+	if value, ok := mc.mutation.Opcode(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+		_node.Opcode = &value
+	}
+	if value, ok := mc.mutation.Server(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldServer,
+		})
+		_node.Server = &value
+	}
+	if value, ok := mc.mutation.TimestampRaw(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTimestampRaw,
+		})
+		_node.TimestampRaw = &value
+	}
 	if value, ok := mc.mutation.Data(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeBytes,
 			Value:  value,
 			Column: message.FieldData,
 		})
-		_node.Data = value
+		_node.Data = &value
 	}
 	return _node, _spec
 }
@@ -315,7 +390,6 @@ func (mcb *MessageCreateBulk) Save(ctx context.Context) ([]*Message, error) {
 	for i := range mcb.builders {
 		func(i int, root context.Context) {
 			builder := mcb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*MessageMutation)
 				if !ok {

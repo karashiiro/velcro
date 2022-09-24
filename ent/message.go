@@ -20,10 +20,6 @@ type Message struct {
 	Timestamp time.Time `json:"timestamp,omitempty"`
 	// Version holds the value of the "version" field.
 	Version int `json:"version,omitempty"`
-	// Segment holds the value of the "segment" field.
-	Segment int `json:"segment,omitempty"`
-	// Opcode holds the value of the "opcode" field.
-	Opcode *int `json:"opcode,omitempty"`
 	// SourceAddress holds the value of the "source_address" field.
 	SourceAddress string `json:"source_address,omitempty"`
 	// SourcePort holds the value of the "source_port" field.
@@ -32,8 +28,22 @@ type Message struct {
 	DestinationAddress string `json:"destination_address,omitempty"`
 	// DestinationPort holds the value of the "destination_port" field.
 	DestinationPort int `json:"destination_port,omitempty"`
+	// Size holds the value of the "size" field.
+	Size uint32 `json:"size,omitempty"`
+	// SourceActor holds the value of the "source_actor" field.
+	SourceActor uint32 `json:"source_actor,omitempty"`
+	// TargetActor holds the value of the "target_actor" field.
+	TargetActor uint32 `json:"target_actor,omitempty"`
+	// SegmentType holds the value of the "segment_type" field.
+	SegmentType int `json:"segment_type,omitempty"`
+	// Opcode holds the value of the "opcode" field.
+	Opcode *int `json:"opcode,omitempty"`
+	// Server holds the value of the "server" field.
+	Server *int `json:"server,omitempty"`
+	// TimestampRaw holds the value of the "timestamp_raw" field.
+	TimestampRaw *uint32 `json:"timestamp_raw,omitempty"`
 	// Data holds the value of the "data" field.
-	Data []byte `json:"data,omitempty"`
+	Data *[]byte `json:"data,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -43,7 +53,7 @@ func (*Message) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case message.FieldData:
 			values[i] = new([]byte)
-		case message.FieldID, message.FieldVersion, message.FieldSegment, message.FieldOpcode, message.FieldSourcePort, message.FieldDestinationPort:
+		case message.FieldID, message.FieldVersion, message.FieldSourcePort, message.FieldDestinationPort, message.FieldSize, message.FieldSourceActor, message.FieldTargetActor, message.FieldSegmentType, message.FieldOpcode, message.FieldServer, message.FieldTimestampRaw:
 			values[i] = new(sql.NullInt64)
 		case message.FieldSourceAddress, message.FieldDestinationAddress:
 			values[i] = new(sql.NullString)
@@ -82,19 +92,6 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				m.Version = int(value.Int64)
 			}
-		case message.FieldSegment:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field segment", values[i])
-			} else if value.Valid {
-				m.Segment = int(value.Int64)
-			}
-		case message.FieldOpcode:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field opcode", values[i])
-			} else if value.Valid {
-				m.Opcode = new(int)
-				*m.Opcode = int(value.Int64)
-			}
 		case message.FieldSourceAddress:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field source_address", values[i])
@@ -119,11 +116,56 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				m.DestinationPort = int(value.Int64)
 			}
+		case message.FieldSize:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field size", values[i])
+			} else if value.Valid {
+				m.Size = uint32(value.Int64)
+			}
+		case message.FieldSourceActor:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field source_actor", values[i])
+			} else if value.Valid {
+				m.SourceActor = uint32(value.Int64)
+			}
+		case message.FieldTargetActor:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field target_actor", values[i])
+			} else if value.Valid {
+				m.TargetActor = uint32(value.Int64)
+			}
+		case message.FieldSegmentType:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field segment_type", values[i])
+			} else if value.Valid {
+				m.SegmentType = int(value.Int64)
+			}
+		case message.FieldOpcode:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field opcode", values[i])
+			} else if value.Valid {
+				m.Opcode = new(int)
+				*m.Opcode = int(value.Int64)
+			}
+		case message.FieldServer:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field server", values[i])
+			} else if value.Valid {
+				m.Server = new(int)
+				*m.Server = int(value.Int64)
+			}
+		case message.FieldTimestampRaw:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field timestamp_raw", values[i])
+			} else if value.Valid {
+				m.TimestampRaw = new(uint32)
+				*m.TimestampRaw = uint32(value.Int64)
+			}
 		case message.FieldData:
 			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field data", values[i])
 			} else if value != nil {
-				m.Data = *value
+				m.Data = value
 			}
 		}
 	}
@@ -159,14 +201,6 @@ func (m *Message) String() string {
 	builder.WriteString("version=")
 	builder.WriteString(fmt.Sprintf("%v", m.Version))
 	builder.WriteString(", ")
-	builder.WriteString("segment=")
-	builder.WriteString(fmt.Sprintf("%v", m.Segment))
-	builder.WriteString(", ")
-	if v := m.Opcode; v != nil {
-		builder.WriteString("opcode=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
 	builder.WriteString("source_address=")
 	builder.WriteString(m.SourceAddress)
 	builder.WriteString(", ")
@@ -179,8 +213,37 @@ func (m *Message) String() string {
 	builder.WriteString("destination_port=")
 	builder.WriteString(fmt.Sprintf("%v", m.DestinationPort))
 	builder.WriteString(", ")
-	builder.WriteString("data=")
-	builder.WriteString(fmt.Sprintf("%v", m.Data))
+	builder.WriteString("size=")
+	builder.WriteString(fmt.Sprintf("%v", m.Size))
+	builder.WriteString(", ")
+	builder.WriteString("source_actor=")
+	builder.WriteString(fmt.Sprintf("%v", m.SourceActor))
+	builder.WriteString(", ")
+	builder.WriteString("target_actor=")
+	builder.WriteString(fmt.Sprintf("%v", m.TargetActor))
+	builder.WriteString(", ")
+	builder.WriteString("segment_type=")
+	builder.WriteString(fmt.Sprintf("%v", m.SegmentType))
+	builder.WriteString(", ")
+	if v := m.Opcode; v != nil {
+		builder.WriteString("opcode=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := m.Server; v != nil {
+		builder.WriteString("server=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := m.TimestampRaw; v != nil {
+		builder.WriteString("timestamp_raw=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := m.Data; v != nil {
+		builder.WriteString("data=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

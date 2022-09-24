@@ -8,17 +8,25 @@ import (
 )
 
 func createMessage(ctx context.Context, client *ent.Client, sniff *SniffRecord) (*ent.Message, error) {
-	return client.Message.Create().
+	create := client.Message.Create().
 		SetTimestamp(sniff.Timestamp).
 		SetVersion(sniff.Version).
-		SetSegment(sniff.Segment).
-		SetNillableOpcode(sniff.Opcode).
-		SetSourceAddress(sniff.GetSourceAddress().String()).
+		SetSourceAddress(sniff.SourceAddress).
 		SetSourcePort(sniff.SourcePort).
-		SetDestinationAddress(sniff.GetDestinationAddress().String()).
+		SetDestinationAddress(sniff.DestinationAddress).
 		SetDestinationPort(sniff.DestinationPort).
-		SetData(sniff.Data).
-		Save(ctx)
+		SetSize(sniff.SegmentHeader.Size).
+		SetSourceActor(sniff.SegmentHeader.SourceActor).
+		SetTargetActor(sniff.SegmentHeader.TargetActor).
+		SetSegmentType(sniff.SegmentHeader.Type).
+		SetData(sniff.MessageData)
+	if sniff.MessageHeader != nil {
+		create.
+			SetNillableOpcode(&sniff.MessageHeader.Opcode).
+			SetNillableServer(&sniff.MessageHeader.Server).
+			SetNillableTimestampRaw(&sniff.MessageHeader.Timestamp)
+	}
+	return create.Save(ctx)
 }
 
 type Archiver struct {

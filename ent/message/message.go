@@ -11,10 +11,6 @@ const (
 	FieldTimestamp = "timestamp"
 	// FieldVersion holds the string denoting the version field in the database.
 	FieldVersion = "version"
-	// FieldSegment holds the string denoting the segment field in the database.
-	FieldSegment = "segment"
-	// FieldOpcode holds the string denoting the opcode field in the database.
-	FieldOpcode = "opcode"
 	// FieldSourceAddress holds the string denoting the source_address field in the database.
 	FieldSourceAddress = "source_address"
 	// FieldSourcePort holds the string denoting the source_port field in the database.
@@ -23,6 +19,20 @@ const (
 	FieldDestinationAddress = "destination_address"
 	// FieldDestinationPort holds the string denoting the destination_port field in the database.
 	FieldDestinationPort = "destination_port"
+	// FieldSize holds the string denoting the size field in the database.
+	FieldSize = "size"
+	// FieldSourceActor holds the string denoting the source_actor field in the database.
+	FieldSourceActor = "source_actor"
+	// FieldTargetActor holds the string denoting the target_actor field in the database.
+	FieldTargetActor = "target_actor"
+	// FieldSegmentType holds the string denoting the segment_type field in the database.
+	FieldSegmentType = "segment_type"
+	// FieldOpcode holds the string denoting the opcode field in the database.
+	FieldOpcode = "opcode"
+	// FieldServer holds the string denoting the server field in the database.
+	FieldServer = "server"
+	// FieldTimestampRaw holds the string denoting the timestamp_raw field in the database.
+	FieldTimestampRaw = "timestamp_raw"
 	// FieldData holds the string denoting the data field in the database.
 	FieldData = "data"
 	// Table holds the table name of the message in the database.
@@ -34,12 +44,17 @@ var Columns = []string{
 	FieldID,
 	FieldTimestamp,
 	FieldVersion,
-	FieldSegment,
-	FieldOpcode,
 	FieldSourceAddress,
 	FieldSourcePort,
 	FieldDestinationAddress,
 	FieldDestinationPort,
+	FieldSize,
+	FieldSourceActor,
+	FieldTargetActor,
+	FieldSegmentType,
+	FieldOpcode,
+	FieldServer,
+	FieldTimestampRaw,
 	FieldData,
 }
 
@@ -52,8 +67,3 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
-
-var (
-	// DefaultSegment holds the default value on creation for the "segment" field.
-	DefaultSegment int
-)

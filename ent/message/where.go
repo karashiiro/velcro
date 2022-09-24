@@ -94,20 +94,6 @@ func Version(v int) predicate.Message {
 	})
 }
 
-// Segment applies equality check predicate on the "segment" field. It's identical to SegmentEQ.
-func Segment(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldSegment), v))
-	})
-}
-
-// Opcode applies equality check predicate on the "opcode" field. It's identical to OpcodeEQ.
-func Opcode(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldOpcode), v))
-	})
-}
-
 // SourceAddress applies equality check predicate on the "source_address" field. It's identical to SourceAddressEQ.
 func SourceAddress(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
@@ -133,6 +119,55 @@ func DestinationAddress(v string) predicate.Message {
 func DestinationPort(v int) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDestinationPort), v))
+	})
+}
+
+// Size applies equality check predicate on the "size" field. It's identical to SizeEQ.
+func Size(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSize), v))
+	})
+}
+
+// SourceActor applies equality check predicate on the "source_actor" field. It's identical to SourceActorEQ.
+func SourceActor(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSourceActor), v))
+	})
+}
+
+// TargetActor applies equality check predicate on the "target_actor" field. It's identical to TargetActorEQ.
+func TargetActor(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTargetActor), v))
+	})
+}
+
+// SegmentType applies equality check predicate on the "segment_type" field. It's identical to SegmentTypeEQ.
+func SegmentType(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSegmentType), v))
+	})
+}
+
+// Opcode applies equality check predicate on the "opcode" field. It's identical to OpcodeEQ.
+func Opcode(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOpcode), v))
+	})
+}
+
+// Server applies equality check predicate on the "server" field. It's identical to ServerEQ.
+func Server(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldServer), v))
+	})
+}
+
+// TimestampRaw applies equality check predicate on the "timestamp_raw" field. It's identical to TimestampRawEQ.
+func TimestampRaw(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTimestampRaw), v))
 	})
 }
 
@@ -268,148 +303,6 @@ func VersionLT(v int) predicate.Message {
 func VersionLTE(v int) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldVersion), v))
-	})
-}
-
-// SegmentEQ applies the EQ predicate on the "segment" field.
-func SegmentEQ(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldSegment), v))
-	})
-}
-
-// SegmentNEQ applies the NEQ predicate on the "segment" field.
-func SegmentNEQ(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldSegment), v))
-	})
-}
-
-// SegmentIn applies the In predicate on the "segment" field.
-func SegmentIn(vs ...int) predicate.Message {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldSegment), v...))
-	})
-}
-
-// SegmentNotIn applies the NotIn predicate on the "segment" field.
-func SegmentNotIn(vs ...int) predicate.Message {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldSegment), v...))
-	})
-}
-
-// SegmentGT applies the GT predicate on the "segment" field.
-func SegmentGT(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldSegment), v))
-	})
-}
-
-// SegmentGTE applies the GTE predicate on the "segment" field.
-func SegmentGTE(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldSegment), v))
-	})
-}
-
-// SegmentLT applies the LT predicate on the "segment" field.
-func SegmentLT(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldSegment), v))
-	})
-}
-
-// SegmentLTE applies the LTE predicate on the "segment" field.
-func SegmentLTE(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldSegment), v))
-	})
-}
-
-// OpcodeEQ applies the EQ predicate on the "opcode" field.
-func OpcodeEQ(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldOpcode), v))
-	})
-}
-
-// OpcodeNEQ applies the NEQ predicate on the "opcode" field.
-func OpcodeNEQ(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldOpcode), v))
-	})
-}
-
-// OpcodeIn applies the In predicate on the "opcode" field.
-func OpcodeIn(vs ...int) predicate.Message {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldOpcode), v...))
-	})
-}
-
-// OpcodeNotIn applies the NotIn predicate on the "opcode" field.
-func OpcodeNotIn(vs ...int) predicate.Message {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldOpcode), v...))
-	})
-}
-
-// OpcodeGT applies the GT predicate on the "opcode" field.
-func OpcodeGT(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldOpcode), v))
-	})
-}
-
-// OpcodeGTE applies the GTE predicate on the "opcode" field.
-func OpcodeGTE(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldOpcode), v))
-	})
-}
-
-// OpcodeLT applies the LT predicate on the "opcode" field.
-func OpcodeLT(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldOpcode), v))
-	})
-}
-
-// OpcodeLTE applies the LTE predicate on the "opcode" field.
-func OpcodeLTE(v int) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldOpcode), v))
-	})
-}
-
-// OpcodeIsNil applies the IsNil predicate on the "opcode" field.
-func OpcodeIsNil() predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldOpcode)))
-	})
-}
-
-// OpcodeNotNil applies the NotNil predicate on the "opcode" field.
-func OpcodeNotNil() predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldOpcode)))
 	})
 }
 
@@ -739,6 +632,496 @@ func DestinationPortLTE(v int) predicate.Message {
 	})
 }
 
+// SizeEQ applies the EQ predicate on the "size" field.
+func SizeEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSize), v))
+	})
+}
+
+// SizeNEQ applies the NEQ predicate on the "size" field.
+func SizeNEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSize), v))
+	})
+}
+
+// SizeIn applies the In predicate on the "size" field.
+func SizeIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSize), v...))
+	})
+}
+
+// SizeNotIn applies the NotIn predicate on the "size" field.
+func SizeNotIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSize), v...))
+	})
+}
+
+// SizeGT applies the GT predicate on the "size" field.
+func SizeGT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSize), v))
+	})
+}
+
+// SizeGTE applies the GTE predicate on the "size" field.
+func SizeGTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSize), v))
+	})
+}
+
+// SizeLT applies the LT predicate on the "size" field.
+func SizeLT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSize), v))
+	})
+}
+
+// SizeLTE applies the LTE predicate on the "size" field.
+func SizeLTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSize), v))
+	})
+}
+
+// SourceActorEQ applies the EQ predicate on the "source_actor" field.
+func SourceActorEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSourceActor), v))
+	})
+}
+
+// SourceActorNEQ applies the NEQ predicate on the "source_actor" field.
+func SourceActorNEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSourceActor), v))
+	})
+}
+
+// SourceActorIn applies the In predicate on the "source_actor" field.
+func SourceActorIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSourceActor), v...))
+	})
+}
+
+// SourceActorNotIn applies the NotIn predicate on the "source_actor" field.
+func SourceActorNotIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSourceActor), v...))
+	})
+}
+
+// SourceActorGT applies the GT predicate on the "source_actor" field.
+func SourceActorGT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSourceActor), v))
+	})
+}
+
+// SourceActorGTE applies the GTE predicate on the "source_actor" field.
+func SourceActorGTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSourceActor), v))
+	})
+}
+
+// SourceActorLT applies the LT predicate on the "source_actor" field.
+func SourceActorLT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSourceActor), v))
+	})
+}
+
+// SourceActorLTE applies the LTE predicate on the "source_actor" field.
+func SourceActorLTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSourceActor), v))
+	})
+}
+
+// TargetActorEQ applies the EQ predicate on the "target_actor" field.
+func TargetActorEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTargetActor), v))
+	})
+}
+
+// TargetActorNEQ applies the NEQ predicate on the "target_actor" field.
+func TargetActorNEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTargetActor), v))
+	})
+}
+
+// TargetActorIn applies the In predicate on the "target_actor" field.
+func TargetActorIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldTargetActor), v...))
+	})
+}
+
+// TargetActorNotIn applies the NotIn predicate on the "target_actor" field.
+func TargetActorNotIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldTargetActor), v...))
+	})
+}
+
+// TargetActorGT applies the GT predicate on the "target_actor" field.
+func TargetActorGT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTargetActor), v))
+	})
+}
+
+// TargetActorGTE applies the GTE predicate on the "target_actor" field.
+func TargetActorGTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTargetActor), v))
+	})
+}
+
+// TargetActorLT applies the LT predicate on the "target_actor" field.
+func TargetActorLT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTargetActor), v))
+	})
+}
+
+// TargetActorLTE applies the LTE predicate on the "target_actor" field.
+func TargetActorLTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTargetActor), v))
+	})
+}
+
+// SegmentTypeEQ applies the EQ predicate on the "segment_type" field.
+func SegmentTypeEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSegmentType), v))
+	})
+}
+
+// SegmentTypeNEQ applies the NEQ predicate on the "segment_type" field.
+func SegmentTypeNEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSegmentType), v))
+	})
+}
+
+// SegmentTypeIn applies the In predicate on the "segment_type" field.
+func SegmentTypeIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSegmentType), v...))
+	})
+}
+
+// SegmentTypeNotIn applies the NotIn predicate on the "segment_type" field.
+func SegmentTypeNotIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSegmentType), v...))
+	})
+}
+
+// SegmentTypeGT applies the GT predicate on the "segment_type" field.
+func SegmentTypeGT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSegmentType), v))
+	})
+}
+
+// SegmentTypeGTE applies the GTE predicate on the "segment_type" field.
+func SegmentTypeGTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSegmentType), v))
+	})
+}
+
+// SegmentTypeLT applies the LT predicate on the "segment_type" field.
+func SegmentTypeLT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSegmentType), v))
+	})
+}
+
+// SegmentTypeLTE applies the LTE predicate on the "segment_type" field.
+func SegmentTypeLTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSegmentType), v))
+	})
+}
+
+// OpcodeEQ applies the EQ predicate on the "opcode" field.
+func OpcodeEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeNEQ applies the NEQ predicate on the "opcode" field.
+func OpcodeNEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeIn applies the In predicate on the "opcode" field.
+func OpcodeIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldOpcode), v...))
+	})
+}
+
+// OpcodeNotIn applies the NotIn predicate on the "opcode" field.
+func OpcodeNotIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldOpcode), v...))
+	})
+}
+
+// OpcodeGT applies the GT predicate on the "opcode" field.
+func OpcodeGT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeGTE applies the GTE predicate on the "opcode" field.
+func OpcodeGTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeLT applies the LT predicate on the "opcode" field.
+func OpcodeLT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeLTE applies the LTE predicate on the "opcode" field.
+func OpcodeLTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldOpcode), v))
+	})
+}
+
+// OpcodeIsNil applies the IsNil predicate on the "opcode" field.
+func OpcodeIsNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldOpcode)))
+	})
+}
+
+// OpcodeNotNil applies the NotNil predicate on the "opcode" field.
+func OpcodeNotNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldOpcode)))
+	})
+}
+
+// ServerEQ applies the EQ predicate on the "server" field.
+func ServerEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldServer), v))
+	})
+}
+
+// ServerNEQ applies the NEQ predicate on the "server" field.
+func ServerNEQ(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldServer), v))
+	})
+}
+
+// ServerIn applies the In predicate on the "server" field.
+func ServerIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldServer), v...))
+	})
+}
+
+// ServerNotIn applies the NotIn predicate on the "server" field.
+func ServerNotIn(vs ...int) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldServer), v...))
+	})
+}
+
+// ServerGT applies the GT predicate on the "server" field.
+func ServerGT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldServer), v))
+	})
+}
+
+// ServerGTE applies the GTE predicate on the "server" field.
+func ServerGTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldServer), v))
+	})
+}
+
+// ServerLT applies the LT predicate on the "server" field.
+func ServerLT(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldServer), v))
+	})
+}
+
+// ServerLTE applies the LTE predicate on the "server" field.
+func ServerLTE(v int) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldServer), v))
+	})
+}
+
+// ServerIsNil applies the IsNil predicate on the "server" field.
+func ServerIsNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldServer)))
+	})
+}
+
+// ServerNotNil applies the NotNil predicate on the "server" field.
+func ServerNotNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldServer)))
+	})
+}
+
+// TimestampRawEQ applies the EQ predicate on the "timestamp_raw" field.
+func TimestampRawEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTimestampRaw), v))
+	})
+}
+
+// TimestampRawNEQ applies the NEQ predicate on the "timestamp_raw" field.
+func TimestampRawNEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTimestampRaw), v))
+	})
+}
+
+// TimestampRawIn applies the In predicate on the "timestamp_raw" field.
+func TimestampRawIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldTimestampRaw), v...))
+	})
+}
+
+// TimestampRawNotIn applies the NotIn predicate on the "timestamp_raw" field.
+func TimestampRawNotIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldTimestampRaw), v...))
+	})
+}
+
+// TimestampRawGT applies the GT predicate on the "timestamp_raw" field.
+func TimestampRawGT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTimestampRaw), v))
+	})
+}
+
+// TimestampRawGTE applies the GTE predicate on the "timestamp_raw" field.
+func TimestampRawGTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTimestampRaw), v))
+	})
+}
+
+// TimestampRawLT applies the LT predicate on the "timestamp_raw" field.
+func TimestampRawLT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTimestampRaw), v))
+	})
+}
+
+// TimestampRawLTE applies the LTE predicate on the "timestamp_raw" field.
+func TimestampRawLTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTimestampRaw), v))
+	})
+}
+
+// TimestampRawIsNil applies the IsNil predicate on the "timestamp_raw" field.
+func TimestampRawIsNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldTimestampRaw)))
+	})
+}
+
+// TimestampRawNotNil applies the NotNil predicate on the "timestamp_raw" field.
+func TimestampRawNotNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldTimestampRaw)))
+	})
+}
+
 // DataEQ applies the EQ predicate on the "data" field.
 func DataEQ(v []byte) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
@@ -800,6 +1183,20 @@ func DataLT(v []byte) predicate.Message {
 func DataLTE(v []byte) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldData), v))
+	})
+}
+
+// DataIsNil applies the IsNil predicate on the "data" field.
+func DataIsNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldData)))
+	})
+}
+
+// DataNotNil applies the NotNil predicate on the "data" field.
+func DataNotNil() predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldData)))
 	})
 }
 

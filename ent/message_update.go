@@ -47,54 +47,6 @@ func (mu *MessageUpdate) AddVersion(i int) *MessageUpdate {
 	return mu
 }
 
-// SetSegment sets the "segment" field.
-func (mu *MessageUpdate) SetSegment(i int) *MessageUpdate {
-	mu.mutation.ResetSegment()
-	mu.mutation.SetSegment(i)
-	return mu
-}
-
-// SetNillableSegment sets the "segment" field if the given value is not nil.
-func (mu *MessageUpdate) SetNillableSegment(i *int) *MessageUpdate {
-	if i != nil {
-		mu.SetSegment(*i)
-	}
-	return mu
-}
-
-// AddSegment adds i to the "segment" field.
-func (mu *MessageUpdate) AddSegment(i int) *MessageUpdate {
-	mu.mutation.AddSegment(i)
-	return mu
-}
-
-// SetOpcode sets the "opcode" field.
-func (mu *MessageUpdate) SetOpcode(i int) *MessageUpdate {
-	mu.mutation.ResetOpcode()
-	mu.mutation.SetOpcode(i)
-	return mu
-}
-
-// SetNillableOpcode sets the "opcode" field if the given value is not nil.
-func (mu *MessageUpdate) SetNillableOpcode(i *int) *MessageUpdate {
-	if i != nil {
-		mu.SetOpcode(*i)
-	}
-	return mu
-}
-
-// AddOpcode adds i to the "opcode" field.
-func (mu *MessageUpdate) AddOpcode(i int) *MessageUpdate {
-	mu.mutation.AddOpcode(i)
-	return mu
-}
-
-// ClearOpcode clears the value of the "opcode" field.
-func (mu *MessageUpdate) ClearOpcode() *MessageUpdate {
-	mu.mutation.ClearOpcode()
-	return mu
-}
-
 // SetSourceAddress sets the "source_address" field.
 func (mu *MessageUpdate) SetSourceAddress(s string) *MessageUpdate {
 	mu.mutation.SetSourceAddress(s)
@@ -133,9 +85,148 @@ func (mu *MessageUpdate) AddDestinationPort(i int) *MessageUpdate {
 	return mu
 }
 
+// SetSize sets the "size" field.
+func (mu *MessageUpdate) SetSize(u uint32) *MessageUpdate {
+	mu.mutation.ResetSize()
+	mu.mutation.SetSize(u)
+	return mu
+}
+
+// AddSize adds u to the "size" field.
+func (mu *MessageUpdate) AddSize(u int32) *MessageUpdate {
+	mu.mutation.AddSize(u)
+	return mu
+}
+
+// SetSourceActor sets the "source_actor" field.
+func (mu *MessageUpdate) SetSourceActor(u uint32) *MessageUpdate {
+	mu.mutation.ResetSourceActor()
+	mu.mutation.SetSourceActor(u)
+	return mu
+}
+
+// AddSourceActor adds u to the "source_actor" field.
+func (mu *MessageUpdate) AddSourceActor(u int32) *MessageUpdate {
+	mu.mutation.AddSourceActor(u)
+	return mu
+}
+
+// SetTargetActor sets the "target_actor" field.
+func (mu *MessageUpdate) SetTargetActor(u uint32) *MessageUpdate {
+	mu.mutation.ResetTargetActor()
+	mu.mutation.SetTargetActor(u)
+	return mu
+}
+
+// AddTargetActor adds u to the "target_actor" field.
+func (mu *MessageUpdate) AddTargetActor(u int32) *MessageUpdate {
+	mu.mutation.AddTargetActor(u)
+	return mu
+}
+
+// SetSegmentType sets the "segment_type" field.
+func (mu *MessageUpdate) SetSegmentType(i int) *MessageUpdate {
+	mu.mutation.ResetSegmentType()
+	mu.mutation.SetSegmentType(i)
+	return mu
+}
+
+// AddSegmentType adds i to the "segment_type" field.
+func (mu *MessageUpdate) AddSegmentType(i int) *MessageUpdate {
+	mu.mutation.AddSegmentType(i)
+	return mu
+}
+
+// SetOpcode sets the "opcode" field.
+func (mu *MessageUpdate) SetOpcode(i int) *MessageUpdate {
+	mu.mutation.ResetOpcode()
+	mu.mutation.SetOpcode(i)
+	return mu
+}
+
+// SetNillableOpcode sets the "opcode" field if the given value is not nil.
+func (mu *MessageUpdate) SetNillableOpcode(i *int) *MessageUpdate {
+	if i != nil {
+		mu.SetOpcode(*i)
+	}
+	return mu
+}
+
+// AddOpcode adds i to the "opcode" field.
+func (mu *MessageUpdate) AddOpcode(i int) *MessageUpdate {
+	mu.mutation.AddOpcode(i)
+	return mu
+}
+
+// ClearOpcode clears the value of the "opcode" field.
+func (mu *MessageUpdate) ClearOpcode() *MessageUpdate {
+	mu.mutation.ClearOpcode()
+	return mu
+}
+
+// SetServer sets the "server" field.
+func (mu *MessageUpdate) SetServer(i int) *MessageUpdate {
+	mu.mutation.ResetServer()
+	mu.mutation.SetServer(i)
+	return mu
+}
+
+// SetNillableServer sets the "server" field if the given value is not nil.
+func (mu *MessageUpdate) SetNillableServer(i *int) *MessageUpdate {
+	if i != nil {
+		mu.SetServer(*i)
+	}
+	return mu
+}
+
+// AddServer adds i to the "server" field.
+func (mu *MessageUpdate) AddServer(i int) *MessageUpdate {
+	mu.mutation.AddServer(i)
+	return mu
+}
+
+// ClearServer clears the value of the "server" field.
+func (mu *MessageUpdate) ClearServer() *MessageUpdate {
+	mu.mutation.ClearServer()
+	return mu
+}
+
+// SetTimestampRaw sets the "timestamp_raw" field.
+func (mu *MessageUpdate) SetTimestampRaw(u uint32) *MessageUpdate {
+	mu.mutation.ResetTimestampRaw()
+	mu.mutation.SetTimestampRaw(u)
+	return mu
+}
+
+// SetNillableTimestampRaw sets the "timestamp_raw" field if the given value is not nil.
+func (mu *MessageUpdate) SetNillableTimestampRaw(u *uint32) *MessageUpdate {
+	if u != nil {
+		mu.SetTimestampRaw(*u)
+	}
+	return mu
+}
+
+// AddTimestampRaw adds u to the "timestamp_raw" field.
+func (mu *MessageUpdate) AddTimestampRaw(u int32) *MessageUpdate {
+	mu.mutation.AddTimestampRaw(u)
+	return mu
+}
+
+// ClearTimestampRaw clears the value of the "timestamp_raw" field.
+func (mu *MessageUpdate) ClearTimestampRaw() *MessageUpdate {
+	mu.mutation.ClearTimestampRaw()
+	return mu
+}
+
 // SetData sets the "data" field.
 func (mu *MessageUpdate) SetData(b []byte) *MessageUpdate {
 	mu.mutation.SetData(b)
+	return mu
+}
+
+// ClearData clears the value of the "data" field.
+func (mu *MessageUpdate) ClearData() *MessageUpdate {
+	mu.mutation.ClearData()
 	return mu
 }
 
@@ -237,40 +328,6 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: message.FieldVersion,
 		})
 	}
-	if value, ok := mu.mutation.Segment(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldSegment,
-		})
-	}
-	if value, ok := mu.mutation.AddedSegment(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldSegment,
-		})
-	}
-	if value, ok := mu.mutation.Opcode(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldOpcode,
-		})
-	}
-	if value, ok := mu.mutation.AddedOpcode(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldOpcode,
-		})
-	}
-	if mu.mutation.OpcodeCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Column: message.FieldOpcode,
-		})
-	}
 	if value, ok := mu.mutation.SourceAddress(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -313,10 +370,132 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: message.FieldDestinationPort,
 		})
 	}
+	if value, ok := mu.mutation.Size(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSize,
+		})
+	}
+	if value, ok := mu.mutation.AddedSize(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSize,
+		})
+	}
+	if value, ok := mu.mutation.SourceActor(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSourceActor,
+		})
+	}
+	if value, ok := mu.mutation.AddedSourceActor(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSourceActor,
+		})
+	}
+	if value, ok := mu.mutation.TargetActor(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTargetActor,
+		})
+	}
+	if value, ok := mu.mutation.AddedTargetActor(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTargetActor,
+		})
+	}
+	if value, ok := mu.mutation.SegmentType(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegmentType,
+		})
+	}
+	if value, ok := mu.mutation.AddedSegmentType(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegmentType,
+		})
+	}
+	if value, ok := mu.mutation.Opcode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if value, ok := mu.mutation.AddedOpcode(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if mu.mutation.OpcodeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: message.FieldOpcode,
+		})
+	}
+	if value, ok := mu.mutation.Server(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldServer,
+		})
+	}
+	if value, ok := mu.mutation.AddedServer(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldServer,
+		})
+	}
+	if mu.mutation.ServerCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: message.FieldServer,
+		})
+	}
+	if value, ok := mu.mutation.TimestampRaw(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTimestampRaw,
+		})
+	}
+	if value, ok := mu.mutation.AddedTimestampRaw(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTimestampRaw,
+		})
+	}
+	if mu.mutation.TimestampRawCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: message.FieldTimestampRaw,
+		})
+	}
 	if value, ok := mu.mutation.Data(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBytes,
 			Value:  value,
+			Column: message.FieldData,
+		})
+	}
+	if mu.mutation.DataCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBytes,
 			Column: message.FieldData,
 		})
 	}
@@ -358,54 +537,6 @@ func (muo *MessageUpdateOne) AddVersion(i int) *MessageUpdateOne {
 	return muo
 }
 
-// SetSegment sets the "segment" field.
-func (muo *MessageUpdateOne) SetSegment(i int) *MessageUpdateOne {
-	muo.mutation.ResetSegment()
-	muo.mutation.SetSegment(i)
-	return muo
-}
-
-// SetNillableSegment sets the "segment" field if the given value is not nil.
-func (muo *MessageUpdateOne) SetNillableSegment(i *int) *MessageUpdateOne {
-	if i != nil {
-		muo.SetSegment(*i)
-	}
-	return muo
-}
-
-// AddSegment adds i to the "segment" field.
-func (muo *MessageUpdateOne) AddSegment(i int) *MessageUpdateOne {
-	muo.mutation.AddSegment(i)
-	return muo
-}
-
-// SetOpcode sets the "opcode" field.
-func (muo *MessageUpdateOne) SetOpcode(i int) *MessageUpdateOne {
-	muo.mutation.ResetOpcode()
-	muo.mutation.SetOpcode(i)
-	return muo
-}
-
-// SetNillableOpcode sets the "opcode" field if the given value is not nil.
-func (muo *MessageUpdateOne) SetNillableOpcode(i *int) *MessageUpdateOne {
-	if i != nil {
-		muo.SetOpcode(*i)
-	}
-	return muo
-}
-
-// AddOpcode adds i to the "opcode" field.
-func (muo *MessageUpdateOne) AddOpcode(i int) *MessageUpdateOne {
-	muo.mutation.AddOpcode(i)
-	return muo
-}
-
-// ClearOpcode clears the value of the "opcode" field.
-func (muo *MessageUpdateOne) ClearOpcode() *MessageUpdateOne {
-	muo.mutation.ClearOpcode()
-	return muo
-}
-
 // SetSourceAddress sets the "source_address" field.
 func (muo *MessageUpdateOne) SetSourceAddress(s string) *MessageUpdateOne {
 	muo.mutation.SetSourceAddress(s)
@@ -444,9 +575,148 @@ func (muo *MessageUpdateOne) AddDestinationPort(i int) *MessageUpdateOne {
 	return muo
 }
 
+// SetSize sets the "size" field.
+func (muo *MessageUpdateOne) SetSize(u uint32) *MessageUpdateOne {
+	muo.mutation.ResetSize()
+	muo.mutation.SetSize(u)
+	return muo
+}
+
+// AddSize adds u to the "size" field.
+func (muo *MessageUpdateOne) AddSize(u int32) *MessageUpdateOne {
+	muo.mutation.AddSize(u)
+	return muo
+}
+
+// SetSourceActor sets the "source_actor" field.
+func (muo *MessageUpdateOne) SetSourceActor(u uint32) *MessageUpdateOne {
+	muo.mutation.ResetSourceActor()
+	muo.mutation.SetSourceActor(u)
+	return muo
+}
+
+// AddSourceActor adds u to the "source_actor" field.
+func (muo *MessageUpdateOne) AddSourceActor(u int32) *MessageUpdateOne {
+	muo.mutation.AddSourceActor(u)
+	return muo
+}
+
+// SetTargetActor sets the "target_actor" field.
+func (muo *MessageUpdateOne) SetTargetActor(u uint32) *MessageUpdateOne {
+	muo.mutation.ResetTargetActor()
+	muo.mutation.SetTargetActor(u)
+	return muo
+}
+
+// AddTargetActor adds u to the "target_actor" field.
+func (muo *MessageUpdateOne) AddTargetActor(u int32) *MessageUpdateOne {
+	muo.mutation.AddTargetActor(u)
+	return muo
+}
+
+// SetSegmentType sets the "segment_type" field.
+func (muo *MessageUpdateOne) SetSegmentType(i int) *MessageUpdateOne {
+	muo.mutation.ResetSegmentType()
+	muo.mutation.SetSegmentType(i)
+	return muo
+}
+
+// AddSegmentType adds i to the "segment_type" field.
+func (muo *MessageUpdateOne) AddSegmentType(i int) *MessageUpdateOne {
+	muo.mutation.AddSegmentType(i)
+	return muo
+}
+
+// SetOpcode sets the "opcode" field.
+func (muo *MessageUpdateOne) SetOpcode(i int) *MessageUpdateOne {
+	muo.mutation.ResetOpcode()
+	muo.mutation.SetOpcode(i)
+	return muo
+}
+
+// SetNillableOpcode sets the "opcode" field if the given value is not nil.
+func (muo *MessageUpdateOne) SetNillableOpcode(i *int) *MessageUpdateOne {
+	if i != nil {
+		muo.SetOpcode(*i)
+	}
+	return muo
+}
+
+// AddOpcode adds i to the "opcode" field.
+func (muo *MessageUpdateOne) AddOpcode(i int) *MessageUpdateOne {
+	muo.mutation.AddOpcode(i)
+	return muo
+}
+
+// ClearOpcode clears the value of the "opcode" field.
+func (muo *MessageUpdateOne) ClearOpcode() *MessageUpdateOne {
+	muo.mutation.ClearOpcode()
+	return muo
+}
+
+// SetServer sets the "server" field.
+func (muo *MessageUpdateOne) SetServer(i int) *MessageUpdateOne {
+	muo.mutation.ResetServer()
+	muo.mutation.SetServer(i)
+	return muo
+}
+
+// SetNillableServer sets the "server" field if the given value is not nil.
+func (muo *MessageUpdateOne) SetNillableServer(i *int) *MessageUpdateOne {
+	if i != nil {
+		muo.SetServer(*i)
+	}
+	return muo
+}
+
+// AddServer adds i to the "server" field.
+func (muo *MessageUpdateOne) AddServer(i int) *MessageUpdateOne {
+	muo.mutation.AddServer(i)
+	return muo
+}
+
+// ClearServer clears the value of the "server" field.
+func (muo *MessageUpdateOne) ClearServer() *MessageUpdateOne {
+	muo.mutation.ClearServer()
+	return muo
+}
+
+// SetTimestampRaw sets the "timestamp_raw" field.
+func (muo *MessageUpdateOne) SetTimestampRaw(u uint32) *MessageUpdateOne {
+	muo.mutation.ResetTimestampRaw()
+	muo.mutation.SetTimestampRaw(u)
+	return muo
+}
+
+// SetNillableTimestampRaw sets the "timestamp_raw" field if the given value is not nil.
+func (muo *MessageUpdateOne) SetNillableTimestampRaw(u *uint32) *MessageUpdateOne {
+	if u != nil {
+		muo.SetTimestampRaw(*u)
+	}
+	return muo
+}
+
+// AddTimestampRaw adds u to the "timestamp_raw" field.
+func (muo *MessageUpdateOne) AddTimestampRaw(u int32) *MessageUpdateOne {
+	muo.mutation.AddTimestampRaw(u)
+	return muo
+}
+
+// ClearTimestampRaw clears the value of the "timestamp_raw" field.
+func (muo *MessageUpdateOne) ClearTimestampRaw() *MessageUpdateOne {
+	muo.mutation.ClearTimestampRaw()
+	return muo
+}
+
 // SetData sets the "data" field.
 func (muo *MessageUpdateOne) SetData(b []byte) *MessageUpdateOne {
 	muo.mutation.SetData(b)
+	return muo
+}
+
+// ClearData clears the value of the "data" field.
+func (muo *MessageUpdateOne) ClearData() *MessageUpdateOne {
+	muo.mutation.ClearData()
 	return muo
 }
 
@@ -578,40 +848,6 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 			Column: message.FieldVersion,
 		})
 	}
-	if value, ok := muo.mutation.Segment(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldSegment,
-		})
-	}
-	if value, ok := muo.mutation.AddedSegment(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldSegment,
-		})
-	}
-	if value, ok := muo.mutation.Opcode(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldOpcode,
-		})
-	}
-	if value, ok := muo.mutation.AddedOpcode(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: message.FieldOpcode,
-		})
-	}
-	if muo.mutation.OpcodeCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Column: message.FieldOpcode,
-		})
-	}
 	if value, ok := muo.mutation.SourceAddress(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -654,10 +890,132 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 			Column: message.FieldDestinationPort,
 		})
 	}
+	if value, ok := muo.mutation.Size(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSize,
+		})
+	}
+	if value, ok := muo.mutation.AddedSize(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSize,
+		})
+	}
+	if value, ok := muo.mutation.SourceActor(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSourceActor,
+		})
+	}
+	if value, ok := muo.mutation.AddedSourceActor(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldSourceActor,
+		})
+	}
+	if value, ok := muo.mutation.TargetActor(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTargetActor,
+		})
+	}
+	if value, ok := muo.mutation.AddedTargetActor(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTargetActor,
+		})
+	}
+	if value, ok := muo.mutation.SegmentType(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegmentType,
+		})
+	}
+	if value, ok := muo.mutation.AddedSegmentType(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldSegmentType,
+		})
+	}
+	if value, ok := muo.mutation.Opcode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if value, ok := muo.mutation.AddedOpcode(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldOpcode,
+		})
+	}
+	if muo.mutation.OpcodeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: message.FieldOpcode,
+		})
+	}
+	if value, ok := muo.mutation.Server(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldServer,
+		})
+	}
+	if value, ok := muo.mutation.AddedServer(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: message.FieldServer,
+		})
+	}
+	if muo.mutation.ServerCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Column: message.FieldServer,
+		})
+	}
+	if value, ok := muo.mutation.TimestampRaw(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTimestampRaw,
+		})
+	}
+	if value, ok := muo.mutation.AddedTimestampRaw(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldTimestampRaw,
+		})
+	}
+	if muo.mutation.TimestampRawCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: message.FieldTimestampRaw,
+		})
+	}
 	if value, ok := muo.mutation.Data(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBytes,
 			Value:  value,
+			Column: message.FieldData,
+		})
+	}
+	if muo.mutation.DataCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBytes,
 			Column: message.FieldData,
 		})
 	}

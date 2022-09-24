@@ -493,16 +493,26 @@ type MessageMutation struct {
 	timestamp           *time.Time
 	version             *int
 	addversion          *int
-	segment             *int
-	addsegment          *int
-	opcode              *int
-	addopcode           *int
 	source_address      *string
 	source_port         *int
 	addsource_port      *int
 	destination_address *string
 	destination_port    *int
 	adddestination_port *int
+	size                *uint32
+	addsize             *int32
+	source_actor        *uint32
+	addsource_actor     *int32
+	target_actor        *uint32
+	addtarget_actor     *int32
+	segment_type        *int
+	addsegment_type     *int
+	opcode              *int
+	addopcode           *int
+	server              *int
+	addserver           *int
+	timestamp_raw       *uint32
+	addtimestamp_raw    *int32
 	data                *[]byte
 	clearedFields       map[string]struct{}
 	done                bool
@@ -700,132 +710,6 @@ func (m *MessageMutation) ResetVersion() {
 	m.addversion = nil
 }
 
-// SetSegment sets the "segment" field.
-func (m *MessageMutation) SetSegment(i int) {
-	m.segment = &i
-	m.addsegment = nil
-}
-
-// Segment returns the value of the "segment" field in the mutation.
-func (m *MessageMutation) Segment() (r int, exists bool) {
-	v := m.segment
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldSegment returns the old "segment" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldSegment(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSegment is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSegment requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSegment: %w", err)
-	}
-	return oldValue.Segment, nil
-}
-
-// AddSegment adds i to the "segment" field.
-func (m *MessageMutation) AddSegment(i int) {
-	if m.addsegment != nil {
-		*m.addsegment += i
-	} else {
-		m.addsegment = &i
-	}
-}
-
-// AddedSegment returns the value that was added to the "segment" field in this mutation.
-func (m *MessageMutation) AddedSegment() (r int, exists bool) {
-	v := m.addsegment
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetSegment resets all changes to the "segment" field.
-func (m *MessageMutation) ResetSegment() {
-	m.segment = nil
-	m.addsegment = nil
-}
-
-// SetOpcode sets the "opcode" field.
-func (m *MessageMutation) SetOpcode(i int) {
-	m.opcode = &i
-	m.addopcode = nil
-}
-
-// Opcode returns the value of the "opcode" field in the mutation.
-func (m *MessageMutation) Opcode() (r int, exists bool) {
-	v := m.opcode
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOpcode returns the old "opcode" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldOpcode(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOpcode is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOpcode requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOpcode: %w", err)
-	}
-	return oldValue.Opcode, nil
-}
-
-// AddOpcode adds i to the "opcode" field.
-func (m *MessageMutation) AddOpcode(i int) {
-	if m.addopcode != nil {
-		*m.addopcode += i
-	} else {
-		m.addopcode = &i
-	}
-}
-
-// AddedOpcode returns the value that was added to the "opcode" field in this mutation.
-func (m *MessageMutation) AddedOpcode() (r int, exists bool) {
-	v := m.addopcode
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearOpcode clears the value of the "opcode" field.
-func (m *MessageMutation) ClearOpcode() {
-	m.opcode = nil
-	m.addopcode = nil
-	m.clearedFields[message.FieldOpcode] = struct{}{}
-}
-
-// OpcodeCleared returns if the "opcode" field was cleared in this mutation.
-func (m *MessageMutation) OpcodeCleared() bool {
-	_, ok := m.clearedFields[message.FieldOpcode]
-	return ok
-}
-
-// ResetOpcode resets all changes to the "opcode" field.
-func (m *MessageMutation) ResetOpcode() {
-	m.opcode = nil
-	m.addopcode = nil
-	delete(m.clearedFields, message.FieldOpcode)
-}
-
 // SetSourceAddress sets the "source_address" field.
 func (m *MessageMutation) SetSourceAddress(s string) {
 	m.source_address = &s
@@ -1010,6 +894,440 @@ func (m *MessageMutation) ResetDestinationPort() {
 	m.adddestination_port = nil
 }
 
+// SetSize sets the "size" field.
+func (m *MessageMutation) SetSize(u uint32) {
+	m.size = &u
+	m.addsize = nil
+}
+
+// Size returns the value of the "size" field in the mutation.
+func (m *MessageMutation) Size() (r uint32, exists bool) {
+	v := m.size
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSize returns the old "size" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldSize(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSize is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSize requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSize: %w", err)
+	}
+	return oldValue.Size, nil
+}
+
+// AddSize adds u to the "size" field.
+func (m *MessageMutation) AddSize(u int32) {
+	if m.addsize != nil {
+		*m.addsize += u
+	} else {
+		m.addsize = &u
+	}
+}
+
+// AddedSize returns the value that was added to the "size" field in this mutation.
+func (m *MessageMutation) AddedSize() (r int32, exists bool) {
+	v := m.addsize
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSize resets all changes to the "size" field.
+func (m *MessageMutation) ResetSize() {
+	m.size = nil
+	m.addsize = nil
+}
+
+// SetSourceActor sets the "source_actor" field.
+func (m *MessageMutation) SetSourceActor(u uint32) {
+	m.source_actor = &u
+	m.addsource_actor = nil
+}
+
+// SourceActor returns the value of the "source_actor" field in the mutation.
+func (m *MessageMutation) SourceActor() (r uint32, exists bool) {
+	v := m.source_actor
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSourceActor returns the old "source_actor" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldSourceActor(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSourceActor is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSourceActor requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSourceActor: %w", err)
+	}
+	return oldValue.SourceActor, nil
+}
+
+// AddSourceActor adds u to the "source_actor" field.
+func (m *MessageMutation) AddSourceActor(u int32) {
+	if m.addsource_actor != nil {
+		*m.addsource_actor += u
+	} else {
+		m.addsource_actor = &u
+	}
+}
+
+// AddedSourceActor returns the value that was added to the "source_actor" field in this mutation.
+func (m *MessageMutation) AddedSourceActor() (r int32, exists bool) {
+	v := m.addsource_actor
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSourceActor resets all changes to the "source_actor" field.
+func (m *MessageMutation) ResetSourceActor() {
+	m.source_actor = nil
+	m.addsource_actor = nil
+}
+
+// SetTargetActor sets the "target_actor" field.
+func (m *MessageMutation) SetTargetActor(u uint32) {
+	m.target_actor = &u
+	m.addtarget_actor = nil
+}
+
+// TargetActor returns the value of the "target_actor" field in the mutation.
+func (m *MessageMutation) TargetActor() (r uint32, exists bool) {
+	v := m.target_actor
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTargetActor returns the old "target_actor" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldTargetActor(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTargetActor is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTargetActor requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTargetActor: %w", err)
+	}
+	return oldValue.TargetActor, nil
+}
+
+// AddTargetActor adds u to the "target_actor" field.
+func (m *MessageMutation) AddTargetActor(u int32) {
+	if m.addtarget_actor != nil {
+		*m.addtarget_actor += u
+	} else {
+		m.addtarget_actor = &u
+	}
+}
+
+// AddedTargetActor returns the value that was added to the "target_actor" field in this mutation.
+func (m *MessageMutation) AddedTargetActor() (r int32, exists bool) {
+	v := m.addtarget_actor
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetTargetActor resets all changes to the "target_actor" field.
+func (m *MessageMutation) ResetTargetActor() {
+	m.target_actor = nil
+	m.addtarget_actor = nil
+}
+
+// SetSegmentType sets the "segment_type" field.
+func (m *MessageMutation) SetSegmentType(i int) {
+	m.segment_type = &i
+	m.addsegment_type = nil
+}
+
+// SegmentType returns the value of the "segment_type" field in the mutation.
+func (m *MessageMutation) SegmentType() (r int, exists bool) {
+	v := m.segment_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSegmentType returns the old "segment_type" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldSegmentType(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSegmentType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSegmentType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSegmentType: %w", err)
+	}
+	return oldValue.SegmentType, nil
+}
+
+// AddSegmentType adds i to the "segment_type" field.
+func (m *MessageMutation) AddSegmentType(i int) {
+	if m.addsegment_type != nil {
+		*m.addsegment_type += i
+	} else {
+		m.addsegment_type = &i
+	}
+}
+
+// AddedSegmentType returns the value that was added to the "segment_type" field in this mutation.
+func (m *MessageMutation) AddedSegmentType() (r int, exists bool) {
+	v := m.addsegment_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSegmentType resets all changes to the "segment_type" field.
+func (m *MessageMutation) ResetSegmentType() {
+	m.segment_type = nil
+	m.addsegment_type = nil
+}
+
+// SetOpcode sets the "opcode" field.
+func (m *MessageMutation) SetOpcode(i int) {
+	m.opcode = &i
+	m.addopcode = nil
+}
+
+// Opcode returns the value of the "opcode" field in the mutation.
+func (m *MessageMutation) Opcode() (r int, exists bool) {
+	v := m.opcode
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOpcode returns the old "opcode" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldOpcode(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOpcode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOpcode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOpcode: %w", err)
+	}
+	return oldValue.Opcode, nil
+}
+
+// AddOpcode adds i to the "opcode" field.
+func (m *MessageMutation) AddOpcode(i int) {
+	if m.addopcode != nil {
+		*m.addopcode += i
+	} else {
+		m.addopcode = &i
+	}
+}
+
+// AddedOpcode returns the value that was added to the "opcode" field in this mutation.
+func (m *MessageMutation) AddedOpcode() (r int, exists bool) {
+	v := m.addopcode
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearOpcode clears the value of the "opcode" field.
+func (m *MessageMutation) ClearOpcode() {
+	m.opcode = nil
+	m.addopcode = nil
+	m.clearedFields[message.FieldOpcode] = struct{}{}
+}
+
+// OpcodeCleared returns if the "opcode" field was cleared in this mutation.
+func (m *MessageMutation) OpcodeCleared() bool {
+	_, ok := m.clearedFields[message.FieldOpcode]
+	return ok
+}
+
+// ResetOpcode resets all changes to the "opcode" field.
+func (m *MessageMutation) ResetOpcode() {
+	m.opcode = nil
+	m.addopcode = nil
+	delete(m.clearedFields, message.FieldOpcode)
+}
+
+// SetServer sets the "server" field.
+func (m *MessageMutation) SetServer(i int) {
+	m.server = &i
+	m.addserver = nil
+}
+
+// Server returns the value of the "server" field in the mutation.
+func (m *MessageMutation) Server() (r int, exists bool) {
+	v := m.server
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldServer returns the old "server" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldServer(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldServer is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldServer requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldServer: %w", err)
+	}
+	return oldValue.Server, nil
+}
+
+// AddServer adds i to the "server" field.
+func (m *MessageMutation) AddServer(i int) {
+	if m.addserver != nil {
+		*m.addserver += i
+	} else {
+		m.addserver = &i
+	}
+}
+
+// AddedServer returns the value that was added to the "server" field in this mutation.
+func (m *MessageMutation) AddedServer() (r int, exists bool) {
+	v := m.addserver
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearServer clears the value of the "server" field.
+func (m *MessageMutation) ClearServer() {
+	m.server = nil
+	m.addserver = nil
+	m.clearedFields[message.FieldServer] = struct{}{}
+}
+
+// ServerCleared returns if the "server" field was cleared in this mutation.
+func (m *MessageMutation) ServerCleared() bool {
+	_, ok := m.clearedFields[message.FieldServer]
+	return ok
+}
+
+// ResetServer resets all changes to the "server" field.
+func (m *MessageMutation) ResetServer() {
+	m.server = nil
+	m.addserver = nil
+	delete(m.clearedFields, message.FieldServer)
+}
+
+// SetTimestampRaw sets the "timestamp_raw" field.
+func (m *MessageMutation) SetTimestampRaw(u uint32) {
+	m.timestamp_raw = &u
+	m.addtimestamp_raw = nil
+}
+
+// TimestampRaw returns the value of the "timestamp_raw" field in the mutation.
+func (m *MessageMutation) TimestampRaw() (r uint32, exists bool) {
+	v := m.timestamp_raw
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTimestampRaw returns the old "timestamp_raw" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldTimestampRaw(ctx context.Context) (v *uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTimestampRaw is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTimestampRaw requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTimestampRaw: %w", err)
+	}
+	return oldValue.TimestampRaw, nil
+}
+
+// AddTimestampRaw adds u to the "timestamp_raw" field.
+func (m *MessageMutation) AddTimestampRaw(u int32) {
+	if m.addtimestamp_raw != nil {
+		*m.addtimestamp_raw += u
+	} else {
+		m.addtimestamp_raw = &u
+	}
+}
+
+// AddedTimestampRaw returns the value that was added to the "timestamp_raw" field in this mutation.
+func (m *MessageMutation) AddedTimestampRaw() (r int32, exists bool) {
+	v := m.addtimestamp_raw
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearTimestampRaw clears the value of the "timestamp_raw" field.
+func (m *MessageMutation) ClearTimestampRaw() {
+	m.timestamp_raw = nil
+	m.addtimestamp_raw = nil
+	m.clearedFields[message.FieldTimestampRaw] = struct{}{}
+}
+
+// TimestampRawCleared returns if the "timestamp_raw" field was cleared in this mutation.
+func (m *MessageMutation) TimestampRawCleared() bool {
+	_, ok := m.clearedFields[message.FieldTimestampRaw]
+	return ok
+}
+
+// ResetTimestampRaw resets all changes to the "timestamp_raw" field.
+func (m *MessageMutation) ResetTimestampRaw() {
+	m.timestamp_raw = nil
+	m.addtimestamp_raw = nil
+	delete(m.clearedFields, message.FieldTimestampRaw)
+}
+
 // SetData sets the "data" field.
 func (m *MessageMutation) SetData(b []byte) {
 	m.data = &b
@@ -1027,7 +1345,7 @@ func (m *MessageMutation) Data() (r []byte, exists bool) {
 // OldData returns the old "data" field's value of the Message entity.
 // If the Message object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldData(ctx context.Context) (v []byte, err error) {
+func (m *MessageMutation) OldData(ctx context.Context) (v *[]byte, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldData is only allowed on UpdateOne operations")
 	}
@@ -1041,9 +1359,22 @@ func (m *MessageMutation) OldData(ctx context.Context) (v []byte, err error) {
 	return oldValue.Data, nil
 }
 
+// ClearData clears the value of the "data" field.
+func (m *MessageMutation) ClearData() {
+	m.data = nil
+	m.clearedFields[message.FieldData] = struct{}{}
+}
+
+// DataCleared returns if the "data" field was cleared in this mutation.
+func (m *MessageMutation) DataCleared() bool {
+	_, ok := m.clearedFields[message.FieldData]
+	return ok
+}
+
 // ResetData resets all changes to the "data" field.
 func (m *MessageMutation) ResetData() {
 	m.data = nil
+	delete(m.clearedFields, message.FieldData)
 }
 
 // Where appends a list predicates to the MessageMutation builder.
@@ -1065,18 +1396,12 @@ func (m *MessageMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MessageMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 14)
 	if m.timestamp != nil {
 		fields = append(fields, message.FieldTimestamp)
 	}
 	if m.version != nil {
 		fields = append(fields, message.FieldVersion)
-	}
-	if m.segment != nil {
-		fields = append(fields, message.FieldSegment)
-	}
-	if m.opcode != nil {
-		fields = append(fields, message.FieldOpcode)
 	}
 	if m.source_address != nil {
 		fields = append(fields, message.FieldSourceAddress)
@@ -1089,6 +1414,27 @@ func (m *MessageMutation) Fields() []string {
 	}
 	if m.destination_port != nil {
 		fields = append(fields, message.FieldDestinationPort)
+	}
+	if m.size != nil {
+		fields = append(fields, message.FieldSize)
+	}
+	if m.source_actor != nil {
+		fields = append(fields, message.FieldSourceActor)
+	}
+	if m.target_actor != nil {
+		fields = append(fields, message.FieldTargetActor)
+	}
+	if m.segment_type != nil {
+		fields = append(fields, message.FieldSegmentType)
+	}
+	if m.opcode != nil {
+		fields = append(fields, message.FieldOpcode)
+	}
+	if m.server != nil {
+		fields = append(fields, message.FieldServer)
+	}
+	if m.timestamp_raw != nil {
+		fields = append(fields, message.FieldTimestampRaw)
 	}
 	if m.data != nil {
 		fields = append(fields, message.FieldData)
@@ -1105,10 +1451,6 @@ func (m *MessageMutation) Field(name string) (ent.Value, bool) {
 		return m.Timestamp()
 	case message.FieldVersion:
 		return m.Version()
-	case message.FieldSegment:
-		return m.Segment()
-	case message.FieldOpcode:
-		return m.Opcode()
 	case message.FieldSourceAddress:
 		return m.SourceAddress()
 	case message.FieldSourcePort:
@@ -1117,6 +1459,20 @@ func (m *MessageMutation) Field(name string) (ent.Value, bool) {
 		return m.DestinationAddress()
 	case message.FieldDestinationPort:
 		return m.DestinationPort()
+	case message.FieldSize:
+		return m.Size()
+	case message.FieldSourceActor:
+		return m.SourceActor()
+	case message.FieldTargetActor:
+		return m.TargetActor()
+	case message.FieldSegmentType:
+		return m.SegmentType()
+	case message.FieldOpcode:
+		return m.Opcode()
+	case message.FieldServer:
+		return m.Server()
+	case message.FieldTimestampRaw:
+		return m.TimestampRaw()
 	case message.FieldData:
 		return m.Data()
 	}
@@ -1132,10 +1488,6 @@ func (m *MessageMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldTimestamp(ctx)
 	case message.FieldVersion:
 		return m.OldVersion(ctx)
-	case message.FieldSegment:
-		return m.OldSegment(ctx)
-	case message.FieldOpcode:
-		return m.OldOpcode(ctx)
 	case message.FieldSourceAddress:
 		return m.OldSourceAddress(ctx)
 	case message.FieldSourcePort:
@@ -1144,6 +1496,20 @@ func (m *MessageMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDestinationAddress(ctx)
 	case message.FieldDestinationPort:
 		return m.OldDestinationPort(ctx)
+	case message.FieldSize:
+		return m.OldSize(ctx)
+	case message.FieldSourceActor:
+		return m.OldSourceActor(ctx)
+	case message.FieldTargetActor:
+		return m.OldTargetActor(ctx)
+	case message.FieldSegmentType:
+		return m.OldSegmentType(ctx)
+	case message.FieldOpcode:
+		return m.OldOpcode(ctx)
+	case message.FieldServer:
+		return m.OldServer(ctx)
+	case message.FieldTimestampRaw:
+		return m.OldTimestampRaw(ctx)
 	case message.FieldData:
 		return m.OldData(ctx)
 	}
@@ -1168,20 +1534,6 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetVersion(v)
-		return nil
-	case message.FieldSegment:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetSegment(v)
-		return nil
-	case message.FieldOpcode:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOpcode(v)
 		return nil
 	case message.FieldSourceAddress:
 		v, ok := value.(string)
@@ -1211,6 +1563,55 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDestinationPort(v)
 		return nil
+	case message.FieldSize:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSize(v)
+		return nil
+	case message.FieldSourceActor:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSourceActor(v)
+		return nil
+	case message.FieldTargetActor:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTargetActor(v)
+		return nil
+	case message.FieldSegmentType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSegmentType(v)
+		return nil
+	case message.FieldOpcode:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOpcode(v)
+		return nil
+	case message.FieldServer:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetServer(v)
+		return nil
+	case message.FieldTimestampRaw:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTimestampRaw(v)
+		return nil
 	case message.FieldData:
 		v, ok := value.([]byte)
 		if !ok {
@@ -1229,17 +1630,32 @@ func (m *MessageMutation) AddedFields() []string {
 	if m.addversion != nil {
 		fields = append(fields, message.FieldVersion)
 	}
-	if m.addsegment != nil {
-		fields = append(fields, message.FieldSegment)
-	}
-	if m.addopcode != nil {
-		fields = append(fields, message.FieldOpcode)
-	}
 	if m.addsource_port != nil {
 		fields = append(fields, message.FieldSourcePort)
 	}
 	if m.adddestination_port != nil {
 		fields = append(fields, message.FieldDestinationPort)
+	}
+	if m.addsize != nil {
+		fields = append(fields, message.FieldSize)
+	}
+	if m.addsource_actor != nil {
+		fields = append(fields, message.FieldSourceActor)
+	}
+	if m.addtarget_actor != nil {
+		fields = append(fields, message.FieldTargetActor)
+	}
+	if m.addsegment_type != nil {
+		fields = append(fields, message.FieldSegmentType)
+	}
+	if m.addopcode != nil {
+		fields = append(fields, message.FieldOpcode)
+	}
+	if m.addserver != nil {
+		fields = append(fields, message.FieldServer)
+	}
+	if m.addtimestamp_raw != nil {
+		fields = append(fields, message.FieldTimestampRaw)
 	}
 	return fields
 }
@@ -1251,14 +1667,24 @@ func (m *MessageMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case message.FieldVersion:
 		return m.AddedVersion()
-	case message.FieldSegment:
-		return m.AddedSegment()
-	case message.FieldOpcode:
-		return m.AddedOpcode()
 	case message.FieldSourcePort:
 		return m.AddedSourcePort()
 	case message.FieldDestinationPort:
 		return m.AddedDestinationPort()
+	case message.FieldSize:
+		return m.AddedSize()
+	case message.FieldSourceActor:
+		return m.AddedSourceActor()
+	case message.FieldTargetActor:
+		return m.AddedTargetActor()
+	case message.FieldSegmentType:
+		return m.AddedSegmentType()
+	case message.FieldOpcode:
+		return m.AddedOpcode()
+	case message.FieldServer:
+		return m.AddedServer()
+	case message.FieldTimestampRaw:
+		return m.AddedTimestampRaw()
 	}
 	return nil, false
 }
@@ -1275,20 +1701,6 @@ func (m *MessageMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddVersion(v)
 		return nil
-	case message.FieldSegment:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddSegment(v)
-		return nil
-	case message.FieldOpcode:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddOpcode(v)
-		return nil
 	case message.FieldSourcePort:
 		v, ok := value.(int)
 		if !ok {
@@ -1303,6 +1715,55 @@ func (m *MessageMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddDestinationPort(v)
 		return nil
+	case message.FieldSize:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSize(v)
+		return nil
+	case message.FieldSourceActor:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSourceActor(v)
+		return nil
+	case message.FieldTargetActor:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTargetActor(v)
+		return nil
+	case message.FieldSegmentType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSegmentType(v)
+		return nil
+	case message.FieldOpcode:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOpcode(v)
+		return nil
+	case message.FieldServer:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddServer(v)
+		return nil
+	case message.FieldTimestampRaw:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTimestampRaw(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Message numeric field %s", name)
 }
@@ -1313,6 +1774,15 @@ func (m *MessageMutation) ClearedFields() []string {
 	var fields []string
 	if m.FieldCleared(message.FieldOpcode) {
 		fields = append(fields, message.FieldOpcode)
+	}
+	if m.FieldCleared(message.FieldServer) {
+		fields = append(fields, message.FieldServer)
+	}
+	if m.FieldCleared(message.FieldTimestampRaw) {
+		fields = append(fields, message.FieldTimestampRaw)
+	}
+	if m.FieldCleared(message.FieldData) {
+		fields = append(fields, message.FieldData)
 	}
 	return fields
 }
@@ -1331,6 +1801,15 @@ func (m *MessageMutation) ClearField(name string) error {
 	case message.FieldOpcode:
 		m.ClearOpcode()
 		return nil
+	case message.FieldServer:
+		m.ClearServer()
+		return nil
+	case message.FieldTimestampRaw:
+		m.ClearTimestampRaw()
+		return nil
+	case message.FieldData:
+		m.ClearData()
+		return nil
 	}
 	return fmt.Errorf("unknown Message nullable field %s", name)
 }
@@ -1345,12 +1824,6 @@ func (m *MessageMutation) ResetField(name string) error {
 	case message.FieldVersion:
 		m.ResetVersion()
 		return nil
-	case message.FieldSegment:
-		m.ResetSegment()
-		return nil
-	case message.FieldOpcode:
-		m.ResetOpcode()
-		return nil
 	case message.FieldSourceAddress:
 		m.ResetSourceAddress()
 		return nil
@@ -1362,6 +1835,27 @@ func (m *MessageMutation) ResetField(name string) error {
 		return nil
 	case message.FieldDestinationPort:
 		m.ResetDestinationPort()
+		return nil
+	case message.FieldSize:
+		m.ResetSize()
+		return nil
+	case message.FieldSourceActor:
+		m.ResetSourceActor()
+		return nil
+	case message.FieldTargetActor:
+		m.ResetTargetActor()
+		return nil
+	case message.FieldSegmentType:
+		m.ResetSegmentType()
+		return nil
+	case message.FieldOpcode:
+		m.ResetOpcode()
+		return nil
+	case message.FieldServer:
+		m.ResetServer()
+		return nil
+	case message.FieldTimestampRaw:
+		m.ResetTimestampRaw()
 		return nil
 	case message.FieldData:
 		m.ResetData()

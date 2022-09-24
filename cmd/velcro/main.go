@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	client, err := ent.Open(dialect.SQLite, "file:velcro.db?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(8000)&_pragma=journal_size_limit(100000000)")
+	client, err := ent.Open(dialect.SQLite, "file:velcro.db?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(8000)")
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed opening connection to sqlite: %v\n", err)
 		os.Exit(1)
@@ -51,6 +51,7 @@ func main() {
 		_, err = fmt.Print(string(buf))
 		if err != nil {
 			logger.LogError(context.Background(), fmt.Sprintf("%v\n", err))
+			continue
 		}
 
 		logger.LogDebug(context.Background(), "found new data")
@@ -59,6 +60,12 @@ func main() {
 		err = json.Unmarshal(buf, &sniff)
 		if err != nil {
 			logger.LogError(context.Background(), fmt.Sprintf("failed to unmarshal record: %v\n", err))
+			continue
+		}
+
+		if sniff.Version != 2 {
+			logger.LogError(context.Background(), fmt.Sprintf("record version is unsupported: %v\n", &sniff))
+			continue
 		}
 
 		logger.LogDebug(context.Background(), fmt.Sprintf("parsed new data: %v\n", &sniff))

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pkg/errors"
 	"github.com/velcro-xiv/velcro/ent"
 )
 
@@ -51,6 +52,15 @@ func (a *Archiver) Store(sr *SniffRecord) {
 	a.q <- sr
 }
 
+func (a *Archiver) storeRecord(ctx context.Context, sr *SniffRecord) error {
+	_, err := createMessage(ctx, a.client, sr)
+	if err != nil {
+		return errors.Wrap(err, "failed to store record")
+	}
+
+	return nil
+}
+
 func (a *Archiver) Process() {
 	go func() {
 	outer:
@@ -59,9 +69,9 @@ func (a *Archiver) Process() {
 			case <-a.stop:
 				break outer
 			case sr := <-a.q:
-				_, err := createMessage(context.Background(), a.client, sr)
+				err := a.storeRecord(context.Background(), sr)
 				if err != nil {
-					a.logger.LogError(context.Background(), fmt.Sprintf("failed to store record: %v\n", err))
+					a.logger.LogError(context.Background(), fmt.Sprintf("%v", err))
 				}
 			}
 		}

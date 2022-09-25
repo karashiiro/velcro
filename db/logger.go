@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/velcro-xiv/velcro/ent"
 )
 
@@ -38,7 +39,7 @@ func NewLogger(client *ent.Client) *Logger {
 func (l *Logger) LogInfo(ctx context.Context, message string) error {
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Info, message)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to log info message")
 	}
 
 	return nil
@@ -47,7 +48,7 @@ func (l *Logger) LogInfo(ctx context.Context, message string) error {
 func (l *Logger) LogWarning(ctx context.Context, message string) error {
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Warning, message)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to log warning message")
 	}
 
 	return nil
@@ -56,7 +57,7 @@ func (l *Logger) LogWarning(ctx context.Context, message string) error {
 func (l *Logger) LogError(ctx context.Context, message string) error {
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Error, message)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to log error message")
 	}
 
 	return nil
@@ -65,7 +66,7 @@ func (l *Logger) LogError(ctx context.Context, message string) error {
 func (l *Logger) LogDebug(ctx context.Context, message string) error {
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Debug, message)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to log debug message")
 	}
 
 	return nil
@@ -74,7 +75,7 @@ func (l *Logger) LogDebug(ctx context.Context, message string) error {
 func (l *Logger) LogTrace(ctx context.Context, message string) error {
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Trace, message)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to log trace message")
 	}
 
 	return nil

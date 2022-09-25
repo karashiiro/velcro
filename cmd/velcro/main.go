@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"entgo.io/ent/dialect"
+	"github.com/pkg/errors"
 	"github.com/velcro-xiv/velcro/db"
 	_ "github.com/velcro-xiv/velcro/driver"
 	"github.com/velcro-xiv/velcro/ent"
@@ -17,7 +18,7 @@ import (
 func main() {
 	client, err := ent.Open(dialect.SQLite, "file:velcro.db?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(8000)")
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "failed opening connection to sqlite: %v\n", err)
+		_, _ = fmt.Fprintf(os.Stderr, "%v", errors.Wrap(err, "failed opening connection to sqlite"))
 		os.Exit(1)
 	}
 	defer client.Close()
@@ -29,7 +30,7 @@ func main() {
 
 	// Run the auto migration tool.
 	if err := client.Schema.Create(context.Background()); err != nil {
-		logger.LogError(context.Background(), fmt.Sprintf("failed creating schema resources: %v\n", err))
+		logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed creating schema resources")))
 	}
 
 	// Store data in the database.
@@ -42,7 +43,7 @@ func main() {
 		buf, err := reader.ReadBytes('\n')
 		if err != nil {
 			if err != io.EOF {
-				logger.LogError(context.Background(), fmt.Sprintf("failed reading standard input: %v", err))
+				logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed reading standard input")))
 			}
 
 			continue
@@ -50,7 +51,7 @@ func main() {
 
 		_, err = fmt.Print(string(buf))
 		if err != nil {
-			logger.LogError(context.Background(), fmt.Sprintf("%v\n", err))
+			logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed to print data line to standard output")))
 			continue
 		}
 
@@ -59,16 +60,16 @@ func main() {
 		sniff := db.SniffRecord{}
 		err = json.Unmarshal(buf, &sniff)
 		if err != nil {
-			logger.LogError(context.Background(), fmt.Sprintf("failed to unmarshal record: %v\n", err))
+			logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed to unmarshal record")))
 			continue
 		}
 
 		if sniff.Version != 2 {
-			logger.LogError(context.Background(), fmt.Sprintf("record version is unsupported: %v\n", &sniff))
+			logger.LogError(context.Background(), fmt.Sprintf("record version is unsupported: %v", &sniff))
 			continue
 		}
 
-		logger.LogDebug(context.Background(), fmt.Sprintf("parsed new data: %v\n", &sniff))
+		logger.LogDebug(context.Background(), fmt.Sprintf("parsed new data: %v", &sniff))
 
 		archiver.Store(&sniff)
 	}

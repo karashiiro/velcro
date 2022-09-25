@@ -36,7 +36,10 @@ func NewLogger(client *ent.Client) *Logger {
 	}
 }
 
-func (l *Logger) LogInfo(ctx context.Context, message string) error {
+func (l *Logger) LogInfo(message string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Info, message)
 	if err != nil {
 		return errors.Wrap(err, "failed to log info message")
@@ -45,7 +48,10 @@ func (l *Logger) LogInfo(ctx context.Context, message string) error {
 	return nil
 }
 
-func (l *Logger) LogWarning(ctx context.Context, message string) error {
+func (l *Logger) LogWarning(message string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Warning, message)
 	if err != nil {
 		return errors.Wrap(err, "failed to log warning message")
@@ -54,7 +60,10 @@ func (l *Logger) LogWarning(ctx context.Context, message string) error {
 	return nil
 }
 
-func (l *Logger) LogError(ctx context.Context, message string) error {
+func (l *Logger) LogError(message string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Error, message)
 	if err != nil {
 		return errors.Wrap(err, "failed to log error message")
@@ -63,7 +72,10 @@ func (l *Logger) LogError(ctx context.Context, message string) error {
 	return nil
 }
 
-func (l *Logger) LogDebug(ctx context.Context, message string) error {
+func (l *Logger) LogDebug(message string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Debug, message)
 	if err != nil {
 		return errors.Wrap(err, "failed to log debug message")
@@ -72,7 +84,10 @@ func (l *Logger) LogDebug(ctx context.Context, message string) error {
 	return nil
 }
 
-func (l *Logger) LogTrace(ctx context.Context, message string) error {
+func (l *Logger) LogTrace(message string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	_, err := createLogEvent(ctx, l.client, time.Now().UTC(), Trace, message)
 	if err != nil {
 		return errors.Wrap(err, "failed to log trace message")

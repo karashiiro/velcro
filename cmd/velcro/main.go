@@ -25,12 +25,12 @@ func main() {
 
 	logger := db.NewLogger(client)
 
-	logger.LogInfo(context.Background(), "connected to sqlite client")
-	logger.LogInfo(context.Background(), "executing auto-migrations")
+	logger.LogInfo("connected to sqlite client")
+	logger.LogInfo("executing auto-migrations")
 
 	// Run the auto migration tool.
 	if err := client.Schema.Create(context.Background()); err != nil {
-		logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed creating schema resources")))
+		logger.LogError(fmt.Sprintf("%v", errors.Wrap(err, "failed creating schema resources")))
 	}
 
 	// Store data in the database.
@@ -43,7 +43,7 @@ func main() {
 		buf, err := reader.ReadBytes('\n')
 		if err != nil {
 			if err != io.EOF {
-				logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed reading standard input")))
+				logger.LogError(fmt.Sprintf("%v", errors.Wrap(err, "failed reading standard input")))
 			}
 
 			continue
@@ -51,25 +51,25 @@ func main() {
 
 		_, err = fmt.Print(string(buf))
 		if err != nil {
-			logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed to print data line to standard output")))
+			logger.LogError(fmt.Sprintf("%v", errors.Wrap(err, "failed to print data line to standard output")))
 			continue
 		}
 
-		logger.LogDebug(context.Background(), "found new data")
+		logger.LogDebug("found new data")
 
 		sniff := db.SniffRecord{}
 		err = json.Unmarshal(buf, &sniff)
 		if err != nil {
-			logger.LogError(context.Background(), fmt.Sprintf("%v", errors.Wrap(err, "failed to unmarshal record")))
+			logger.LogError(fmt.Sprintf("%v", errors.Wrap(err, "failed to unmarshal record")))
 			continue
 		}
 
 		if sniff.Version != 2 {
-			logger.LogError(context.Background(), fmt.Sprintf("record version is unsupported: %v", &sniff))
+			logger.LogError(fmt.Sprintf("record version is unsupported: %v", &sniff))
 			continue
 		}
 
-		logger.LogDebug(context.Background(), fmt.Sprintf("parsed new data: %v", &sniff))
+		logger.LogDebug(fmt.Sprintf("parsed new data: %v", &sniff))
 
 		archiver.Store(&sniff)
 	}

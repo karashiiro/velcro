@@ -71,7 +71,7 @@ func (a *Archiver) Process() {
 			case sr := <-a.q:
 				err := a.storeRecord(context.Background(), sr)
 				if err != nil {
-					a.logger.LogError(context.Background(), fmt.Sprintf("%v", err))
+					a.logger.LogError(fmt.Sprintf("%v", err))
 				}
 			}
 		}

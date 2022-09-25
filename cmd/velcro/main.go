@@ -17,11 +17,16 @@ import (
 )
 
 var Version = "v0.0.0"
+var Commit = ""
 
 type args struct{}
 
 func (args) Version() string {
-	return fmt.Sprintf("velcro %s", Version)
+	if Version != "v0.0.0" {
+		return fmt.Sprintf("velcro %s", Version)
+	}
+
+	return fmt.Sprintf("velcro %s-%s", Version, Commit)
 }
 
 func ArchiveData() {

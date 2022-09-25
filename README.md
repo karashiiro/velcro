@@ -1,5 +1,5 @@
 # velcro
-Archive Velcro JSON Lines data to SQLite. Designed to be used with [xivsniff](https://github.com/velcro-xiv/xivsniff). Velcro prints
+Archive Velcro JSON Lines data to SQLite. Designed to be used with [`xivsniff`](https://github.com/velcro-xiv/xivsniff). `velcro` prints
 all data it receives to standard output, so additional programs can be chained in front of it.
 
 ## Usage
@@ -13,6 +13,12 @@ cat <file> | velcro
 ### With `xivsniff`
 ```zsh
 xivsniff | velcro
+```
+
+#### Powershell
+Powershell has its own conventions distinct from `cmd` and `bash`-based shells. Because of this, pipes into typical programs require special handling. It's best to just avoid Powershell when using `velcro`. However, you can force it to work with something like this:
+```pwsh
+xivsniff | Out-String -stream | velcro
 ```
 
 ## Viewing your data

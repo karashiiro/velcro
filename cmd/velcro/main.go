@@ -9,16 +9,25 @@ import (
 	"os"
 
 	"entgo.io/ent/dialect"
+	"github.com/alexflint/go-arg"
 	"github.com/pkg/errors"
 	"github.com/velcro-xiv/velcro/db"
 	_ "github.com/velcro-xiv/velcro/driver"
 	"github.com/velcro-xiv/velcro/ent"
 )
 
-func main() {
+var Version = "v0.0.0"
+
+type args struct{}
+
+func (args) Version() string {
+	return fmt.Sprintf("velcro %s", Version)
+}
+
+func ArchiveData() {
 	client, err := ent.Open(dialect.SQLite, "file:velcro.db?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(8000)")
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "%v", errors.Wrap(err, "failed opening connection to sqlite"))
+		_, _ = fmt.Fprintf(os.Stderr, "%v\n", errors.Wrap(err, "failed opening connection to sqlite"))
 		os.Exit(1)
 	}
 	defer client.Close()
@@ -73,4 +82,10 @@ func main() {
 
 		archiver.Store(&sniff)
 	}
+}
+
+func main() {
+	var args args
+	arg.MustParse(&args)
+	ArchiveData()
 }
